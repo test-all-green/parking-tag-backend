@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'java'
+//    id "org.flywaydb.flyway" version "5.2.4"
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group 'cn.tag'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'com.h2database:h2'
+//    compile 'org.flywaydb:flyway-core'
+    compile 'org.json:json:20180813'
+    compile 'com.alibaba:fastjson:1.2.47'
+    compile 'mysql:mysql-connector-java:5.1.25'
+
+    testCompile 'org.assertj:assertj-core:3.10.0'
+    testCompile 'org.mockito:mockito-core:2.+'
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.0.0')
+    testCompile('org.junit.jupiter:junit-jupiter-params:5.0.0')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.0.0')
+
+}
+
+//flyway {
+//    url = 'jdbc:h2:mem:test'
+//    user = 'sa'
+//}
