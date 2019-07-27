@@ -20,9 +20,9 @@ public class ParkingOrder implements Serializable {
     private int Id;
 
     @Column(length = 25)
-    private String parkingOrderId;
+    private String carNumber;
 
-    private int parkingOrderStyle;
+    private int parkingOrderType;
 
     private int parkingOrderStatus;
 
