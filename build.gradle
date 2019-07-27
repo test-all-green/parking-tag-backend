@@ -23,7 +23,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'com.h2database:h2'
+//    compile 'com.h2database:h2'
 //    compile 'org.flywaydb:flyway-core'
     compile 'org.json:json:20180813'
     compile 'com.alibaba:fastjson:1.2.47'

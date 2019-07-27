@@ -14,9 +14,13 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/test_all_green?serverTimezone=UTC
     username: root
     password: Tm960513
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: create
+        dialect: org.hibernate.dialect.MySQL5Dialect
 
 #  h2:
 #    console:
