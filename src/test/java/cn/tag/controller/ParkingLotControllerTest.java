@@ -3,7 +3,11 @@ package cn.tag.controller;
 import cn.tag.entity.ParkingLot;
 import cn.tag.entity.ParkingStaff;
 import cn.tag.respository.ParkingLotRepository;
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -20,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -58,5 +64,19 @@ public class ParkingLotControllerTest {
         JSONArray resultArray = new JSONArray(mvcResult.getResponse().getContentAsString());
         //then
         Assertions.assertEquals(parkingLots.size(), resultArray.length());
+    }
+
+    @Test
+    public void should_return_200_when_post() throws Exception {
+        //given
+        ParkingLot parkingLot = new ParkingLot("停车场1", 10, null);
+        //when
+        String jsonString = new ObjectMapper().writeValueAsString(parkingLot);
+        MvcResult mvcResult = mockMvc.perform(post("/parking-lots")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()).andReturn();
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(parkingLot.getParkingName(), resultObject.getString("parkingName"));
     }
 }
