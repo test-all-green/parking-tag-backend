@@ -6,20 +6,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class StaffCharacter implements Serializable {
-
+public class ParkingPermission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String characteName;
+    @Column(nullable = false, length = 25)
+    private String permissionName;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<ParkingPermission> permissionList;
+    @Column(length = 100)
+    private String permissionDescription;
 }

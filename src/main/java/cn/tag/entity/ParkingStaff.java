@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "parking_staff")
-public class ParkingStaff implements Serializable {
+public class ParkingStaff  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -35,4 +35,9 @@ public class ParkingStaff implements Serializable {
     private int staffAccountStatus;
 
     private String staffPassword;
+
+//    @OneToMany(fetch = FetchType.EAGER)
+//
+//    private List<ParkingStaff> staffList;
+//    private int pid;
 }
