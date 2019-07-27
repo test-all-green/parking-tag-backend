@@ -11,12 +11,12 @@ logging:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/test_all_green?serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/test_all_green_test?serverTimezone=UTC
     username: root
-    password: Tm960513
+    password: root
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:

@@ -21,7 +21,7 @@ public class ParkingStaff  implements Serializable {
     private String staffName;
 
     @Column(nullable = false, length = 11)
-    private String staffPhnoe;
+    private String staffPhone;
 
     @Column(nullable = false, length = 25)
     private String staffEmail;
@@ -40,4 +40,14 @@ public class ParkingStaff  implements Serializable {
 //
 //    private List<ParkingStaff> staffList;
 //    private int pid;
+
+    public ParkingStaff(String staffName, String staffPhone, String staffEmail, int staffStatus, StaffCharacter staffCharacter, int staffAccountStatus, String staffPassword) {
+        this.staffName = staffName;
+        this.staffPhone = staffPhone;
+        this.staffEmail = staffEmail;
+        this.staffStatus = staffStatus;
+        this.staffCharacter = staffCharacter;
+        this.staffAccountStatus = staffAccountStatus;
+        this.staffPassword = staffPassword;
+    }
 }

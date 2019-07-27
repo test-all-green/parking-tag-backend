@@ -26,4 +26,9 @@ public class ParkingLot implements Serializable {
     @JoinColumn(name = "staffId")
     private ParkingStaff parkingStaff;
 
+    public ParkingLot(String parkingName, int parkingLotCapacity, ParkingStaff parkingStaff) {
+        this.parkingName = parkingName;
+        this.parkingLotCapacity = parkingLotCapacity;
+        this.parkingStaff = parkingStaff;
+    }
 }
