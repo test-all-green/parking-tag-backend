@@ -19,6 +19,7 @@ public class ParkingStaffService {
         String staffPassword= SHA1.encode("123456");
         parkingStaff.setStaffPassword(staffPassword);
         parkingStaff.setStaffAccountStatus(0);
+        parkingStaff.setStaffStatus(0);
         parkingStaffRespository.save(parkingStaff);
     }
 
