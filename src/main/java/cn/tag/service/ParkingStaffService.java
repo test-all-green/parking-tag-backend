@@ -4,6 +4,8 @@ import cn.tag.entity.ParkingStaff;
 import cn.tag.respository.ParkingStaffRepository;
 import cn.tag.util.SHA1;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,5 +20,9 @@ public class ParkingStaffService {
         parkingStaff.setStaffPassword(staffPassword);
         parkingStaff.setStaffAccountStatus(0);
         parkingStaffRespository.save(parkingStaff);
+    }
+
+    public Page<ParkingStaff> queryParkingStaffList(Integer pageNum, Integer pageSize) {
+        return parkingStaffRespository.findAll(PageRequest.of(pageNum-1,pageSize));
     }
 }
