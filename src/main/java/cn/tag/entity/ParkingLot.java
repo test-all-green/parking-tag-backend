@@ -18,7 +18,7 @@ public class ParkingLot implements Serializable {
     private Integer id;
 
     @Column(nullable = false, length = 25)
-    private String parkingName;
+    private String parkingLotName;
 
     private Integer parkingLotCapacity;
 
@@ -32,8 +32,8 @@ public class ParkingLot implements Serializable {
     @JoinColumn(name = "staffId")
     private ParkingStaff parkingStaff;
 
-    public ParkingLot(String parkingName, Integer parkingLotCapacity, ParkingStaff parkingStaff) {
-        this.parkingName = parkingName;
+    public ParkingLot(String parkingLotName, Integer parkingLotCapacity, ParkingStaff parkingStaff) {
+        this.parkingLotName = parkingLotName;
         this.parkingLotCapacity = parkingLotCapacity;
         this.parkingStaff = parkingStaff;
     }

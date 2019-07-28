@@ -78,7 +78,7 @@ public class ParkingLotControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-        Assertions.assertEquals(parkingLot.getParkingName(), resultObject.getString("parkingName"));
+        Assertions.assertEquals(parkingLot.getParkingLotName(), resultObject.getString("parkingLotName"));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ParkingLotControllerTest {
                 .andExpect(status().isOk()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
         // 修改的字段
-        Assertions.assertEquals(parkingLot.getParkingName(), resultObject.getString("parkingName"));
+        Assertions.assertEquals(parkingLot.getParkingLotName(), resultObject.getString("parkingLotName"));
         // 不修改的字段不变
         Assertions.assertEquals(parkingLots.get(0).getParkingLotCapacity().intValue(), resultObject.getInt("parkingLotCapacity"));
     }

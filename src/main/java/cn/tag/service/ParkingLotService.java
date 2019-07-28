@@ -30,8 +30,8 @@ public class ParkingLotService {
 
     public ParkingLot update(Integer id, ParkingLot parkingLot) {
         ParkingLot lot = parkingLotRepository.findById(id).get();
-        if(parkingLot.getParkingName() != null){
-            lot.setParkingName(parkingLot.getParkingName());
+        if(parkingLot.getParkingLotName() != null){
+            lot.setParkingLotName(parkingLot.getParkingLotName());
         }
         if(parkingLot.getParkingLotCapacity() != null){
             lot.setParkingLotCapacity(parkingLot.getParkingLotCapacity());
