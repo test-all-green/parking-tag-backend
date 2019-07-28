@@ -11,4 +11,6 @@ public interface ParkingStaffRepository extends JpaRepository<ParkingStaff,Integ
     ParkingStaff findParkingStaffByStaffEmail(String staffEmail);
 
     ParkingStaff findParkingStaffById(Integer id);
+
+    ParkingStaff findByStaffName(String staffName);
 }
