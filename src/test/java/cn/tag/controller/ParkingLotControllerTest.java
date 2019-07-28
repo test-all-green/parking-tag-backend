@@ -81,4 +81,14 @@ public class ParkingLotControllerTest {
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
         Assertions.assertEquals(parkingLot.getParkingName(), resultObject.getString("parkingName"));
     }
+
+    @Test
+    public void should_return_parking_lot_by_page_when_get_by_page() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/parking-lots")
+                .param("page", "0").param("pageSize", "2"))
+                .andExpect(status().isOk()).andReturn();
+
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(2,resultObject.getJSONArray("content").length());
+    }
 }
