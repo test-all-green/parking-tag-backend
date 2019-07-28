@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/parking-lots")
 @Slf4j
@@ -34,8 +35,11 @@ public class ParkingLotController {
 
     @GetMapping(params = {"page", "pageSize"})
     public ResponseEntity findByPage(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
-        Page<ParkingLot> parkingLotPage = parkingLotService.findByPage(page, pageSize);
+                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                     @RequestParam(name = "name", required = false) String name,
+                                     @RequestParam(name = "min", defaultValue = "1", required = false) Integer min,
+                                     @RequestParam(name = "max", defaultValue = "9999", required = false) Integer max){
+        Page<ParkingLot> parkingLotPage = parkingLotService.findByPage(page, pageSize, name, min, max);
         return ResponseEntity.ok().body(parkingLotPage);
     }
 
