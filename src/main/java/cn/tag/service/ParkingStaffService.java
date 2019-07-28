@@ -26,8 +26,8 @@ public class ParkingStaffService {
         return parkingStaffRepository.findAll(PageRequest.of(pageNum-1,pageSize));
     }
 
-    public ParkingStaff findParkingStaffByStaffEmail(ParkingStaff user){
-        return parkingStaffRepository.findParkingStaffByStaffEmail(user.getStaffEmail());
+    public ParkingStaff findParkingStaffByStaffEmail(String loginMethod){
+        return parkingStaffRepository.findParkingStaffByStaffEmail(loginMethod);
     }
     public ParkingStaff findUserById(Integer userId) {
         return parkingStaffRepository.findParkingStaffById(userId);
