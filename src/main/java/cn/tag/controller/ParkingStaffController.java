@@ -26,7 +26,7 @@ public class ParkingStaffController {
     }
 
     @GetMapping
-    public ResponseEntity queryParkingStaffList(@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+    public ResponseEntity queryParkingStaffListByPageNumAndPageSize(@RequestParam Integer pageNum,@RequestParam Integer pageSize){
         Page<ParkingStaff> parkingStaffList = parkingStaffService.queryParkingStaffList(pageNum,pageSize);
         return ResponseEntity.ok().body(parkingStaffList);
     }

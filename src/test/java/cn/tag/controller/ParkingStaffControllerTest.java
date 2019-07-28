@@ -75,7 +75,7 @@ public class ParkingStaffControllerTest {
     }
 
     @Test
-    public void should_return_parking_staff_list_when_get() throws Exception {
+    public void should_return_parking_staff_list_when_get_by_pageNum_and_pageSize() throws Exception {
         //given
         List<ParkingStaff> parkingStaffList = parkingStaffRespository.findAll();
         //when
