@@ -4,6 +4,7 @@ import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.ParkingStaff;
 import cn.tag.service.ParkingStaffService;
 import cn.tag.service.TokenService;
+import cn.tag.util.SHA1;
 import cn.tag.util.TokenUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class ParkingStaffController {
             return jsonObject;
         }
         setParkingStaff(userForBase, parkingStaffByStaffEmail);
-        if (!userForBase.getStaffPassword().equals(params.get(STAFF_PASSWORD).toString())) {
+        if (!userForBase.getStaffPassword().equals(SHA1.encode(params.get(STAFF_PASSWORD).toString()))) {
             jsonObject.put(MESSAGE, LOGIN_ERROR_PASSWORD_ERROR);
             return jsonObject;
         }
