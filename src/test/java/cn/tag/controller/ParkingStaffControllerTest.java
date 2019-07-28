@@ -67,7 +67,6 @@ public class ParkingStaffControllerTest {
         ParkingStaff parkingStaff = new ParkingStaff("张小三", "12382736475", "hello@parkinglot.com", 0, staffCharacter);
         int currentSize = parkingStaffRespository.findAll().size();
         //when
-        System.out.println(JSON.toJSONString(parkingStaff));
         ResultActions resultActions = this.mockMvc.perform(post("/parking-staffs")
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON_UTF8).content(JSON.toJSONString(parkingStaff)));
         //then
