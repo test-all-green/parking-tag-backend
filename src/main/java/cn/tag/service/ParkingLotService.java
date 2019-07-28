@@ -27,4 +27,21 @@ public class ParkingLotService {
     public Page<ParkingLot> findByPage(Integer page, Integer pageSize) {
         return parkingLotRepository.findAll(PageRequest.of(page-1, pageSize));
     }
+
+    public ParkingLot update(Integer id, ParkingLot parkingLot) {
+        ParkingLot lot = parkingLotRepository.findById(id).get();
+        if(parkingLot.getParkingName() != null){
+            lot.setParkingName(parkingLot.getParkingName());
+        }
+        if(parkingLot.getParkingLotCapacity() != null){
+            lot.setParkingLotCapacity(parkingLot.getParkingLotCapacity());
+        }
+        if(parkingLot.getParkingLotStatus() != null){
+            lot.setParkingLotStatus(parkingLot.getParkingLotStatus());
+        }
+        if(parkingLot.getParkingStaff() != null){
+            lot.setParkingStaff(parkingLot.getParkingStaff());
+        }
+        return parkingLotRepository.save(lot);
+    }
 }

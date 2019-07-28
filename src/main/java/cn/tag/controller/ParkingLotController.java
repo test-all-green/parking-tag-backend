@@ -39,4 +39,10 @@ public class ParkingLotController {
         return ResponseEntity.ok().body(parkingLotPage);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody ParkingLot parkingLot){
+        ParkingLot update = parkingLotService.update(id, parkingLot);
+        return ResponseEntity.ok().body(update);
+    }
+
 }

@@ -26,8 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -85,10 +84,23 @@ public class ParkingLotControllerTest {
     @Test
     public void should_return_parking_lot_by_page_when_get_by_page() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/parking-lots")
-                .param("page", "0").param("pageSize", "2"))
+                .param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk()).andReturn();
 
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
         Assertions.assertEquals(2,resultObject.getJSONArray("content").length());
+    }
+
+    @Test
+    public void should_update_parking_lot_when_patch() throws Exception {
+        ParkingLot parkingLot = new ParkingLot("停车场A", null, null);
+        MvcResult mvcResult = mockMvc.perform(patch("/parking-lots/" + parkingLots.get(0).getId())
+                .content(JSON.toJSONString(parkingLot)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        // 修改的字段
+        Assertions.assertEquals(parkingLot.getParkingName(), resultObject.getString("parkingName"));
+        // 不修改的字段不变
+        Assertions.assertEquals(parkingLots.get(0).getParkingLotCapacity().intValue(), resultObject.getInt("parkingLotCapacity"));
     }
 }
