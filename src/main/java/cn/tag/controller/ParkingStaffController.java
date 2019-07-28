@@ -22,6 +22,8 @@ import java.util.List;
 @Slf4j
 public class ParkingStaffController {
 
+    public static final String LOGIN_ERROR_STAFF_NOT_EXIT = "登录失败,用户不存在";
+    public static final String LOGIN_ERROR_PASSWORD_ERROR = "登录失败,密码错误";
     @Autowired
     ParkingStaffService parkingStaffService;
     @Autowired
@@ -30,21 +32,19 @@ public class ParkingStaffController {
     // 登录
     @RequestMapping(value = "/login" ,method = RequestMethod.GET)
     public Object login(ParkingStaff user, HttpServletResponse response) {
-        System.out.println("---------------user:"+user.getStaffEmail());
-        System.out.println("Controller==========login");
         JSONObject jsonObject = new JSONObject();
         ParkingStaff userForBase = new ParkingStaff();
         ParkingStaff parkingStaffByStaffEmail = new ParkingStaff();
         parkingStaffByStaffEmail = parkingStaffService.findParkingStaffByStaffEmail(user);
         if(parkingStaffByStaffEmail==null) {
-            jsonObject.put("message", "登录失败,用户不存在");
+            jsonObject.put("message", LOGIN_ERROR_STAFF_NOT_EXIT);
             return jsonObject;
         }
         userForBase.setId(parkingStaffByStaffEmail.getId());
         userForBase.setStaffEmail(parkingStaffByStaffEmail.getStaffEmail());
         userForBase.setStaffPassword(parkingStaffByStaffEmail.getStaffPassword());
         if (!userForBase.getStaffPassword().equals(user.getStaffPassword())) {
-            jsonObject.put("message", "登录失败,密码错误");
+            jsonObject.put("message", LOGIN_ERROR_PASSWORD_ERROR);
             return jsonObject;
         } else {
             String token = tokenService.getToken(userForBase);
@@ -65,9 +65,7 @@ public class ParkingStaffController {
     //@Apio(value = "获取信息", notes = "获取信息")
     @GetMapping(value = "/getMessage")
     public String getMessage() {
-        System.out.println("Controller==========getMessage");
         // 取出token中带的用户id 进行操作
-        System.out.println(TokenUtil.getTokenUserId());
 
         return "您已通过验证";
     }
