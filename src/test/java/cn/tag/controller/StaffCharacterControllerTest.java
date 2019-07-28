@@ -51,7 +51,7 @@ public class StaffCharacterControllerTest {
         ResultActions resultActions = this.mockMvc.perform(get("/staff-characters"));
         //then
         resultActions.andExpect(status().isOk());
-        Assertions.assertEquals(staffCharacterList.get(0).getCharacteName()
+        Assertions.assertEquals(staffCharacterList.get(0).getCharacterName()
                 , JSONObject.parseObject(JSONArray.parseArray(resultActions.andReturn().getResponse().getContentAsString()).get(0).toString()).getString("characteName"));
     }
 
