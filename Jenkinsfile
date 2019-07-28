@@ -33,7 +33,7 @@ pid=$(netstat -nlp | grep :8088 | awk '{print $7}' | awk -F"/" '{ print $1 }');
 if [ -n "${pid}" ]; then
 kill -9 ${pid};
 fi
-cp -f /var/lib/jenkins/workspace/demo-backend/build/libs/parking-tag-backend-1.0-SNAPSHOT.jar /var/prod/package-booking-backend/
+cp -f /var/lib/jenkins/workspace/demo-backend/build/libs/parking-tag-backend-1.0-SNAPSHOT.jar /var/prod/parking-tag-backend/
 JENKINS_NODE_COOKIE=dontKillMe nohup java -jar /var/prod/parking-tag-backend/parking-tag-backend-1.0-SNAPSHOT.jar &
                 '''
             }
