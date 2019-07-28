@@ -84,6 +84,11 @@ public class ParkingStaffController {
         parkingStaffService.createAccount(parkingStaff);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+    @PutMapping("/{id}")
+    public ResponseEntity updateAccount(@PathVariable Integer id,@RequestBody ParkingStaff parkingStaff) {
+        parkingStaffService.updateAccount(id,parkingStaff);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping
     public ResponseEntity queryParkingStaffListByPageNumAndPageSize(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {

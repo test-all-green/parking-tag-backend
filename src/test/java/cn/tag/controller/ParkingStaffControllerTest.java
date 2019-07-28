@@ -8,6 +8,7 @@ import cn.tag.respository.StaffCharacterRepository;
 import cn.tag.util.SHA1;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -86,6 +86,22 @@ public class ParkingStaffControllerTest {
         JSONObject jsonObject = JSONObject.parseObject(resultActions.andReturn().getResponse().getContentAsString());
         List<ParkingStaff> currentParkingStaffList = JSONObject.parseArray(jsonObject.get("content").toString(), ParkingStaff.class);
         Assertions.assertEquals(parkingStaffList.get(0).getStaffName(), currentParkingStaffList.get(0).getStaffName());
+    }
+
+    @Test
+    public void should_return_ok_status_when_modify_staff() throws Exception {
+        //given
+        ParkingStaff parkingStaff = parkingStaffRespository.findAll().get(0);
+        StaffCharacter staffCharacter = parkingStaff.getStaffCharacter();
+        String characterName = staffCharacter.getCharacterName();
+        staffCharacter.setId(2);
+        parkingStaff.setStaffCharacter(staffCharacter);
+        //when
+        ResultActions resultActions = this.mockMvc.perform(put("/parking-staffs/{id}",parkingStaff.getId().toString())
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON_UTF8).content(JSON.toJSONString(parkingStaff)));
+        //then
+        resultActions.andExpect(status().isOk());
+        Assertions.assertNotEquals(characterName,parkingStaffRespository.findParkingStaffById(parkingStaff.getId()).getStaffCharacter().getCharacterName());
     }
 
 }
