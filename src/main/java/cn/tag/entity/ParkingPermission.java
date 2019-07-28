@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class ParkingPermission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 25)
     private String permissionName;

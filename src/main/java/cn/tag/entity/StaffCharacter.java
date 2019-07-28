@@ -18,12 +18,12 @@ public class StaffCharacter implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String characteName;
+    private String characterName;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<ParkingPermission> permissionList;
 
-    public StaffCharacter(String characteName) {
-        this.characteName = characteName;
+    public StaffCharacter(String characterName) {
+        this.characterName = characterName;
     }
 }
