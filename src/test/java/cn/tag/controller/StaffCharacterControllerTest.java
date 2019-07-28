@@ -52,7 +52,7 @@ public class StaffCharacterControllerTest {
         //then
         resultActions.andExpect(status().isOk());
         Assertions.assertEquals(staffCharacterList.get(0).getCharacterName()
-                , JSONObject.parseObject(JSONArray.parseArray(resultActions.andReturn().getResponse().getContentAsString()).get(0).toString()).getString("characteName"));
+            , JSONObject.parseObject(JSONArray.parseArray(resultActions.andReturn().getResponse().getContentAsString()).get(0).toString()).getString("characterName"));
     }
 
 }

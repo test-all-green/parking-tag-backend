@@ -26,7 +26,7 @@ public class ParkingStaff  implements Serializable {
     @Column(nullable = false, length = 25)
     private String staffEmail;
 
-    private int staffStatus;
+    private Integer staffStatus;
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="characterId")
@@ -37,7 +37,7 @@ public class ParkingStaff  implements Serializable {
     private String staffPassword;
 
     public ParkingStaff(String staffName, String staffPhone, String staffEmail
-            , int staffStatus, StaffCharacter staffCharacter) {
+            , Integer staffStatus, StaffCharacter staffCharacter) {
         this.staffName = staffName;
         this.staffPhone = staffPhone;
         this.staffEmail = staffEmail;
@@ -46,7 +46,7 @@ public class ParkingStaff  implements Serializable {
     }
 
     public ParkingStaff(String staffName, String staffPhone, String staffEmail
-            , int staffStatus, StaffCharacter staffCharacter, int staffAccountStatus, String staffPassword) {
+            , Integer staffStatus, StaffCharacter staffCharacter, Integer staffAccountStatus, String staffPassword) {
         this.staffName = staffName;
         this.staffPhone = staffPhone;
         this.staffEmail = staffEmail;

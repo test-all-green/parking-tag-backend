@@ -26,12 +26,21 @@ public class ParkingOrder implements Serializable {
 
     private Integer parkingOrderStatus;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parkingId")
-    private ParkingLot parkingLot;
-
     private Date parkingOrderCreateTime;
 
     private Date parkingOrderEndTime;
 
+    private Integer parkingLotId;
+
+    private Integer parkingStaffId;
+
+    public ParkingOrder(String carNumber, Integer parkingOrderType, Integer parkingOrderStatus, Date parkingOrderCreateTime, Date parkingOrderEndTime, Integer parkingLotId, Integer parkingStaffId) {
+        this.carNumber = carNumber;
+        this.parkingOrderType = parkingOrderType;
+        this.parkingOrderStatus = parkingOrderStatus;
+        this.parkingOrderCreateTime = parkingOrderCreateTime;
+        this.parkingOrderEndTime = parkingOrderEndTime;
+        this.parkingLotId = parkingLotId;
+        this.parkingStaffId = parkingStaffId;
+    }
 }
