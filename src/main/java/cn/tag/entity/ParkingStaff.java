@@ -15,7 +15,7 @@ import java.util.List;
 public class ParkingStaff  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 25)
     private String staffName;
@@ -32,7 +32,7 @@ public class ParkingStaff  implements Serializable {
     @JoinColumn(name="characterId")
     private StaffCharacter staffCharacter;
 
-    private int staffAccountStatus;
+    private Integer staffAccountStatus;
 
     private String staffPassword;
 
