@@ -103,4 +103,24 @@ public class ParkingLotControllerTest {
         // 不修改的字段不变
         Assertions.assertEquals(parkingLots.get(0).getParkingLotCapacity().intValue(), resultObject.getInt("parkingLotCapacity"));
     }
+
+    @Test
+    public void should_return_filter_parking_lot_when_search() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/parking-lots").param("name", "2")
+                .param("page", "1").param("pageSize", "2"))
+                .andExpect(status().isOk()).andReturn();
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(1,resultObject.getJSONArray("content").length());
+        Assertions.assertEquals("停车场2",resultObject.getJSONArray("content").getJSONObject(0).getString("parkingLotName"));
+    }
+
+    @Test
+    public void should_return_filter_parking_lot_when_search_with_capacity() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/parking-lots")
+                .param("min", "14").param("max","16")
+                .param("page", "1").param("pageSize", "2"))
+                .andExpect(status().isOk()).andReturn();
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(1,resultObject.getJSONArray("content").length());
+    }
 }
