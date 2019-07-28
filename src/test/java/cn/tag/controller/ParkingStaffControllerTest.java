@@ -56,7 +56,8 @@ public class ParkingStaffControllerTest {
 
     @AfterEach
     public void after_test() {
-//        parkingStaffRespository.deleteAll();
+        parkingStaffRespository.deleteAll();
+        staffCharacterRepository.deleteAll();
     }
 
     @Test
