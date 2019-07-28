@@ -17,7 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-@CrossOrigin
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/parking-staffs")
 @Slf4j

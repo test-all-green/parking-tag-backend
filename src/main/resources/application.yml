@@ -1,5 +1,7 @@
 server:
   port: 8088
+  tomcat:
+    uri-encoding: UTF-8
 logging.file: logs/application.log
 logging:
   level:
@@ -11,7 +13,7 @@ logging:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/test_all_green?serverTimezone=UTC&useUnicode=true&amp;characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/test_all_green?characterEncoding=utf-8
     username: root
     password: root
   jpa:
@@ -21,7 +23,15 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-
+  banner:
+    charset: UTF-8
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  messages:
+    encoding: UTF-8
 #  h2:
 #    console:
 #      enabled: true
