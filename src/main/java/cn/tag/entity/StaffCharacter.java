@@ -22,4 +22,8 @@ public class StaffCharacter implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<ParkingPermission> permissionList;
+
+    public StaffCharacter(String characteName) {
+        this.characteName = characteName;
+    }
 }
