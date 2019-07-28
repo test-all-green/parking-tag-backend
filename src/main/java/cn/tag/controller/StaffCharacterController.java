@@ -21,7 +21,6 @@ public class StaffCharacterController {
 
     @GetMapping
     public ResponseEntity queryStaffCharacterList(){
-        System.out.println("------------------");
         return ResponseEntity.ok().body(staffCharacterService.queryStaffCharacterList());
     }
 }
