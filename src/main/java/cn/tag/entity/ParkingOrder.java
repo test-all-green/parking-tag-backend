@@ -17,14 +17,14 @@ public class ParkingOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int Id;
+    private Integer Id;
 
     @Column(length = 25)
     private String carNumber;
 
-    private int parkingOrderType;
+    private Integer parkingOrderType;
 
-    private int parkingOrderStatus;
+    private Integer parkingOrderStatus;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parkingId")
