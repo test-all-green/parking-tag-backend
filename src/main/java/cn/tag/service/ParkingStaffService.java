@@ -12,24 +12,24 @@ import org.springframework.stereotype.Service;
 public class ParkingStaffService {
 
     @Autowired
-    ParkingStaffRepository parkingStaffRepository;
+    ParkingStaffRepository parkingStaffRespository;
 
 
     public void createAccount(ParkingStaff parkingStaff) {
         String staffPassword= SHA1.encode("123456");
         parkingStaff.setStaffPassword(staffPassword);
         parkingStaff.setStaffAccountStatus(0);
-        parkingStaffRepository.save(parkingStaff);
+        parkingStaffRespository.save(parkingStaff);
     }
 
     public Page<ParkingStaff> queryParkingStaffList(Integer pageNum, Integer pageSize) {
-        return parkingStaffRepository.findAll(PageRequest.of(pageNum-1,pageSize));
+        return parkingStaffRespository.findAll(PageRequest.of(pageNum-1,pageSize));
     }
 
     public ParkingStaff findParkingStaffByStaffEmail(String loginMethod){
-        return parkingStaffRepository.findParkingStaffByStaffEmail(loginMethod);
+        return parkingStaffRespository.findParkingStaffByStaffEmail(loginMethod);
     }
     public ParkingStaff findUserById(Integer userId) {
-        return parkingStaffRepository.findParkingStaffById(userId);
+        return parkingStaffRespository.findParkingStaffById(userId);
     }
 }
