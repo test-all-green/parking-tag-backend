@@ -15,7 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Service
-public class ParkingLotService {
+public class PublicParkingLotService {
 
     @Autowired
     private PublicParkingLotRepository publicParkingLotRepository;
@@ -24,8 +24,9 @@ public class ParkingLotService {
         return publicParkingLotRepository.findAll();
     }
 
-    public PublicParkingLot add(PublicParkingLot parkingLot) {
-        return publicParkingLotRepository.save(parkingLot);
+    public PublicParkingLot add(PublicParkingLot publicParkingLot) {
+        publicParkingLot.setRemain(publicParkingLot.getParkingLotCapacity());
+        return publicParkingLotRepository.save(publicParkingLot);
     }
 
     public Page<PublicParkingLot> findByPage(Integer page, Integer pageSize) {
