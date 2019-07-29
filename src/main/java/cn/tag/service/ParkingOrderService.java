@@ -4,6 +4,7 @@ import cn.tag.entity.ParkingOrder;
 import cn.tag.enums.OrderStatusEnum;
 import cn.tag.exception.CustomException;
 import cn.tag.respository.ParkingOrderRepository;
+import cn.tag.util.TokenUtil;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ public class ParkingOrderService {
     public ParkingOrder add(ParkingOrder parkingOrder){
         String carNum = parkingOrder.getCarNum();
         if(parkingOrderRepository.findOrdersByCarNumAndSatusNotF(carNum).size()==0) {
+            parkingOrder.setCarUserId(Integer.valueOf(TokenUtil.getTokenUserId()));
             parkingOrder.setCreateTime(Long.valueOf(getStringDate()));
             parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
             return parkingOrderRepository.save(parkingOrder);
@@ -55,4 +57,8 @@ public class ParkingOrderService {
     public List<ParkingOrder> findOrderOfUser(Integer userId) {
         return parkingOrderRepository.findByCarUserIdOrderByCreateTimeDesc(userId);
     }
+    public ParkingOrder findOrderByOrderId(Integer orderId){
+        return parkingOrderRepository.findById(orderId).get();
+    }
+
 }

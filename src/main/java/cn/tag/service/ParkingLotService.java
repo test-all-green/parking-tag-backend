@@ -74,4 +74,8 @@ public class ParkingLotService {
         };
         return publicParkingLotRepository.findAll(specification, PageRequest.of(page-1, pageSize));
     }
+
+    public PublicParkingLot findById(Integer valueOf) {
+        return publicParkingLotRepository.findById(valueOf).get();
+    }
 }
