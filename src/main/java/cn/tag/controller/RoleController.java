@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/staff-characters")
+@RequestMapping("/roles")
 @Slf4j
 public class RoleController {
 

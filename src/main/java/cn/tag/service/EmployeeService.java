@@ -21,7 +21,7 @@ public class EmployeeService {
 
     public void createAccount(Employee employee) {
         String staffPassword= SHA1.encode("123456");
-        employee.setEmployeeId("EM"+(int)Math.random()*100000);
+//        employee.setEmployeeId("EM"+(int)Math.random()*100000);
         employee.setEmployeePassword(staffPassword);
         employee.setStatus(0);
         employee.setWorkStatus(WorkStatusEnum.IDLE.getKey());
