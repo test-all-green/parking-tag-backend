@@ -39,17 +39,6 @@ public class EmployeeController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping(value = "/register")
-    public ResponseEntity register(@RequestBody Employee employee){
-        employeeService.register(employee);
-       return ResponseEntity.ok(getRegisterSuccessMap());
-    }
-    public Map getRegisterSuccessMap(){
-        Map map = new HashMap();
-        map.put("code","200");
-        map.put("success","恭喜你注册成功");
-        return map;
-    }
     @PostMapping(value = "/login")
     public Object login(@RequestBody Map<String,Object> params,
                         HttpServletResponse response) {

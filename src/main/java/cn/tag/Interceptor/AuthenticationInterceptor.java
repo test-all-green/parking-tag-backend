@@ -1,8 +1,10 @@
 package cn.tag.Interceptor;
 
 import cn.tag.entity.Employee;
+import cn.tag.entity.User;
 import cn.tag.exception.CustomException;
 import cn.tag.service.EmployeeService;
+import cn.tag.service.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -27,6 +29,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     EmployeeService userService;
 
+    @Autowired
+    UserService userService1;
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
         String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
@@ -45,7 +50,27 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         //检查有没有需要用户权限的注解
         try {
-            if (method.isAnnotationPresent(UserLoginToken.class)) {
+            if(method.isAnnotationPresent(EmployeeToken.class)){
+                EmployeeToken employeeToken = method.getAnnotation(EmployeeToken.class);
+                if (employeeToken.required()) {
+                    // 执行认证
+                    if (token == null) {
+                        throw new CustomException(CODE_100, NULL_TOKEN);
+                    }
+                    // 获取 token 中的 user id
+                    int userId;
+                    userId = Integer.parseInt(JWT.decode(token).getAudience().get(0));
+                    User user = userService1.findUserById(userId);
+                    if (user == null) {
+                        throw new CustomException(CODE_100, USER_NOT_EXIT);
+                    }
+                    // 验证 token
+                    JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getUserPassword())).build();
+                    jwtVerifier.verify(token);
+                    return true;
+                }
+            }
+            else if (method.isAnnotationPresent(UserLoginToken.class)) {
                 UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
                 if (userLoginToken.required()) {
                     // 执行认证
