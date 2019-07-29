@@ -5,8 +5,8 @@ import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.PublicParkingLot;
 import cn.tag.enums.OrderStatusEnum;
-import cn.tag.service.ParkingLotService;
 import cn.tag.service.ParkingOrderService;
+import cn.tag.service.PublicParkingLotService;
 import cn.tag.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class ParkingOrderController {
     @Autowired
     private ParkingOrderService parkingOrderService;
     @Autowired
-    private ParkingLotService parkingLotService;
+    private PublicParkingLotService parkingLotService;
     @GetMapping
     public ResponseEntity findAll(){
         return ResponseEntity.ok(parkingOrderService.findAll());
