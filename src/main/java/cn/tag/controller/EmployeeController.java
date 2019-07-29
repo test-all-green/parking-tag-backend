@@ -1,8 +1,8 @@
 package cn.tag.controller;
 
 import cn.tag.Interceptor.UserLoginToken;
-import cn.tag.entity.ParkingStaff;
-import cn.tag.service.ParkingStaffService;
+import cn.tag.entity.Employee;
+import cn.tag.service.EmployeeService;
 import cn.tag.service.TokenService;
 import cn.tag.util.SHA1;
 import cn.tag.util.TokenUtil;
@@ -20,9 +20,9 @@ import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/parking-staffs")
+@RequestMapping("/employees")
 @Slf4j
-public class ParkingStaffController {
+public class EmployeeController {
 
     private static final String LOGIN_ERROR_STAFF_NOT_EXIT = "登录失败,用户不存在";
     private static final String LOGIN_ERROR_PASSWORD_ERROR = "登录失败,密码错误";
@@ -31,7 +31,7 @@ public class ParkingStaffController {
     public static final String TOKEN = "token";
     public static final String STAFF_PASSWORD = "staffPassword";
     @Autowired
-    private ParkingStaffService parkingStaffService;
+    private EmployeeService employeeService;
     @Autowired
     private TokenService tokenService;
 
@@ -39,27 +39,27 @@ public class ParkingStaffController {
     public Object login(@RequestBody Map<String,Object> params,
                         HttpServletResponse response) {
         JSONObject jsonObject = new JSONObject();
-        ParkingStaff userForBase = new ParkingStaff();
-        ParkingStaff parkingStaffByStaffEmail = parkingStaffService.findParkingStaffByStaffEmail(params.get(LOGIN_METHOD).toString());
+        Employee userForBase = new Employee();
+        Employee parkingStaffByStaffEmail = employeeService.findParkingStaffByStaffEmail(params.get(LOGIN_METHOD).toString());
         if (parkingStaffByStaffEmail == null) {
             jsonObject.put(MESSAGE, LOGIN_ERROR_STAFF_NOT_EXIT);
             return jsonObject;
         }
-        setParkingStaff(userForBase, parkingStaffByStaffEmail);
-        if (!userForBase.getStaffPassword().equals(SHA1.encode(params.get(STAFF_PASSWORD).toString()))) {
+        setEmployee(userForBase, parkingStaffByStaffEmail);
+        if (!userForBase.getEmployeePassword().equals(SHA1.encode(params.get(STAFF_PASSWORD).toString()))) {
             jsonObject.put(MESSAGE, LOGIN_ERROR_PASSWORD_ERROR);
             return jsonObject;
         }
         return getObjectWhenPasswordEquals(response, jsonObject, userForBase);
     }
 
-    private void setParkingStaff(ParkingStaff userForBase, ParkingStaff parkingStaffByStaffEmail) {
-        userForBase.setId(parkingStaffByStaffEmail.getId());
-        userForBase.setStaffEmail(parkingStaffByStaffEmail.getStaffEmail());
-        userForBase.setStaffPassword(parkingStaffByStaffEmail.getStaffPassword());
+    private void setEmployee(Employee userForBase, Employee employeeEmail) {
+        userForBase.setId(employeeEmail.getId());
+        userForBase.setEmail(employeeEmail.getEmail());
+        userForBase.setEmployeePassword(employeeEmail.getEmployeePassword());
     }
 
-    private Object getObjectWhenPasswordEquals(HttpServletResponse response, JSONObject jsonObject, ParkingStaff userForBase) {
+    private Object getObjectWhenPasswordEquals(HttpServletResponse response, JSONObject jsonObject, Employee userForBase) {
         String token = tokenService.getToken(userForBase);
         jsonObject.put(TOKEN, token);
         Cookie cookie = new Cookie(TOKEN, token);
@@ -81,19 +81,19 @@ public class ParkingStaffController {
     }
 
     @PostMapping
-    public ResponseEntity createAccount(@RequestBody ParkingStaff parkingStaff) {
-        parkingStaffService.createAccount(parkingStaff);
+    public ResponseEntity createAccount(@RequestBody Employee employee) {
+        employeeService.createAccount(employee);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @PutMapping("/{id}")
-    public ResponseEntity updateAccount(@PathVariable Integer id,@RequestBody ParkingStaff parkingStaff) {
-        parkingStaffService.updateAccount(id,parkingStaff);
+    public ResponseEntity updateAccount(@PathVariable Integer id,@RequestBody Employee employee) {
+        employeeService.updateAccount(id,employee);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity queryParkingStaffListByPageNumAndPageSize(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        Page<ParkingStaff> parkingStaffList = parkingStaffService.queryParkingStaffList(pageNum, pageSize);
+    @GetMapping()
+    public ResponseEntity queryEmployeeList(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        Page<Employee> parkingStaffList = employeeService.queryEmployeeList(page, pageSize);
         return ResponseEntity.ok().body(parkingStaffList);
     }
 

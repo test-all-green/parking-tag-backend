@@ -10,14 +10,12 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingPermission implements Serializable {
+public class Permission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(nullable = false, length = 25)
+    private int id;
+//    @Column(nullable = false, length = 25)
     private String permissionName;
-
-    @Column(length = 100)
+//    @Column(length = 100)
     private String permissionDescription;
 }

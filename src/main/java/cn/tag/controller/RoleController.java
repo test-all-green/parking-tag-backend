@@ -1,7 +1,7 @@
 package cn.tag.controller;
 
-import cn.tag.entity.StaffCharacter;
-import cn.tag.service.StaffCharacterService;
+
+import cn.tag.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/staff-characters")
 @Slf4j
-public class StaffCharacterController {
+public class RoleController {
 
     @Autowired
-    StaffCharacterService staffCharacterService;
+    RoleService roleService;
 
     @GetMapping
-    public ResponseEntity queryStaffCharacterList(){
-        return ResponseEntity.ok().body(staffCharacterService.queryStaffCharacterList());
+    public ResponseEntity queryCharacterList(){
+        return ResponseEntity.ok().body(roleService.queryCharacterList());
     }
 }

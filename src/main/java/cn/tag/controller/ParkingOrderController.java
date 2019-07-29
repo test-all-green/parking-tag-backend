@@ -1,6 +1,5 @@
 package cn.tag.controller;
 
-import cn.tag.entity.ParkingLot;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.service.ParkingOrderService;
 import lombok.extern.slf4j.Slf4j;

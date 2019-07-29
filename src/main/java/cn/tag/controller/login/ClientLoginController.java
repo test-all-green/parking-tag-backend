@@ -1,6 +1,6 @@
 package cn.tag.controller.login;
 
-import cn.tag.entity.ParkingStaff;
+import cn.tag.entity.Employee;
 import cn.tag.exception.LoginException;
 import cn.tag.service.login.LoginService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class ClientLoginController {
     private LoginService loginService;
 
     @PostMapping("staff/login")
-    public ResponseEntity login(@RequestBody ParkingStaff user) {
+    public ResponseEntity login(@RequestBody Employee user) {
         if (loginService.authenticate(user)) {
             Map responseBody = new HashMap();
             responseBody.put("message", "login success");

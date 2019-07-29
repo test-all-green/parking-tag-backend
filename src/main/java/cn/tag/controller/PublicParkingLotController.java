@@ -1,6 +1,6 @@
 package cn.tag.controller;
 
-import cn.tag.entity.ParkingLot;
+import cn.tag.entity.PublicParkingLot;
 import cn.tag.service.ParkingLotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +14,23 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/parking-lots")
+@RequestMapping("/public-parking-lots")
 @Slf4j
-public class ParkingLotController {
+public class PublicParkingLotController {
 
     @Autowired
     private ParkingLotService parkingLotService;
 
     @GetMapping
     public ResponseEntity findAll(){
-        List<ParkingLot> parkingLots = parkingLotService.findAll();
+        List<PublicParkingLot> parkingLots = parkingLotService.findAll();
 //        return ResponseEntity.ok().body(parkingLots);
         return ResponseEntity.ok(parkingLots);
     }
 
     @PostMapping
-    public ResponseEntity add(@RequestBody ParkingLot parkingLot){
-        ParkingLot add = parkingLotService.add(parkingLot);
+    public ResponseEntity add(@RequestBody PublicParkingLot parkingLot){
+        PublicParkingLot add = parkingLotService.add(parkingLot);
         return ResponseEntity.status(HttpStatus.CREATED).body(add);
     }
 
@@ -40,13 +40,13 @@ public class ParkingLotController {
                                      @RequestParam(name = "name", required = false) String name,
                                      @RequestParam(name = "min", defaultValue = "1", required = false) Integer min,
                                      @RequestParam(name = "max", defaultValue = "9999", required = false) Integer max){
-        Page<ParkingLot> parkingLotPage = parkingLotService.findByPage(page, pageSize, name, min, max);
+        Page<PublicParkingLot> parkingLotPage = parkingLotService.findByPage(page, pageSize, name, min, max);
         return ResponseEntity.ok().body(parkingLotPage);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity update(@PathVariable Integer id, @RequestBody ParkingLot parkingLot){
-        ParkingLot update = parkingLotService.update(id, parkingLot);
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody PublicParkingLot parkingLot){
+        PublicParkingLot update = parkingLotService.update(id, parkingLot);
         return ResponseEntity.ok().body(update);
     }
 
