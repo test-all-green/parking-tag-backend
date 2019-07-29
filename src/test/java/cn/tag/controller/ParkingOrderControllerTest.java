@@ -38,14 +38,22 @@ public class ParkingOrderControllerTest {
     private ParkingOrderRepository parkingOrderRepository;
 
     private List<ParkingOrder> parkingOrderList;
+
     @BeforeEach
     public void setupDb(){
-//        parkingOrderList=parkingOrderRepository.saveAll(Arrays.asList(
-//                new ParkingOrder("12345",1,1,new Date(),new Date(),1,1),
-//                new ParkingOrder("23456",2,2,new Date(),new Date(),2,2),
-//                new ParkingOrder("34567",3,3,new Date(),new Date(),3,3)
-//                ));
-
+        parkingOrderList = parkingOrderRepository.saveAll(Arrays.asList(
+                new ParkingOrder(null,"粤A12345", 1, null,
+                        null, 2, "等待点", "停车地点", "201907290923",
+                        null, null, null, 3000L, new Date().getTime(),
+                        null, "WP", null, null, null),
+                new ParkingOrder(null,"粤A12345", 1, null,
+                        null, 2, "等待点", "停车地点", "201907290923",
+                        null, null, null, 3000L, new Date().getTime(),
+                        null, "WP", null, null, null),
+                new ParkingOrder(null,"粤A12345", 2, null,
+                        null, 2, "等待点", "停车地点", "201907290923",
+                        null, null, null, 3000L, new Date().getTime(),
+                        null, "WP", null, null, null)));
     }
 //    @AfterEach
 //    public void cleanAll(){
@@ -95,4 +103,10 @@ public class ParkingOrderControllerTest {
 //        // 修改的字段
 //        Assertions.assertEquals(parkingOrder.getCarNumber(), resultObject.getString("carNumber"));
 //    }
+
+    @Test
+    public void should_get_order_with_user_id_1_when_get(){
+
+//        mockMvc.perform(get("/parking-orders").param("userId", 1)).
+    }
 }

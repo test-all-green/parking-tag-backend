@@ -30,13 +30,8 @@ pipeline {
             }
             steps {
                 sh '''
-                    export BUILD_ID=dontKillMe
-pid=$(netstat -nlp | grep :8088 | awk '{print $7}' | awk -F"/" '{ print $1 }');
-if [ -n "${pid}" ]; then
-kill -9 ${pid};
-fi
-cp -f /var/lib/jenkins/workspace/parking-tag-backend/build/libs/parking-tag-1.0-SNAPSHOT.jar /var/prod/parking-tag-backend/
-JENKINS_NODE_COOKIE=dontKillMe nohup java -jar /var/prod/parking-tag-backend/parking-tag-1.0-SNAPSHOT.jar &
+                    scp -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa /var/lib/jenkins/workspace/prod-parking-tag-backend/build/libs/parking-tag-1.0-SNAPSHOT.jar root@39.98.243.100:/opt/parking-tag-backend/ 
+                    ssh -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa root@39.98.243.100 < deploy.sh
                 '''
             }
         }

@@ -12,7 +12,11 @@ public class TokenUtil {
 		String userId = JWT.decode(token).getAudience().get(0);
 		return userId;
 	}
-
+	public static String getTokenCharaterId() {
+		String token = getRequest().getHeader("token");// 从 http 请求头中取出 token
+		String userId = JWT.decode(token).getAudience().get(1);
+		return userId;
+	}
 	/**
 	 * 获取request
 	 * 

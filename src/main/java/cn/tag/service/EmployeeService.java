@@ -44,4 +44,9 @@ public class EmployeeService {
         employee.setId(id);
         employeeRepository.save(employee);
     }
+
+    public Employee register(Employee employee) {
+        employee.setEmployeePassword(SHA1.encode(employee.getEmployeePassword()));
+        return employeeRepository.save(employee);
+    }
 }
