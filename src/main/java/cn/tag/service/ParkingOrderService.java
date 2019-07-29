@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,14 +29,20 @@ public class ParkingOrderService {
     public ParkingOrder add(ParkingOrder parkingOrder){
         String carNum = parkingOrder.getCarNum();
         if(parkingOrderRepository.findOrdersByCarNumAndSatusNotF(carNum).size()==0) {
-            parkingOrder.setCreateTime(System.currentTimeMillis());
+            parkingOrder.setCreateTime(Long.valueOf(getStringDate()));
             parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
             return parkingOrderRepository.save(parkingOrder);
         }else{
             throw new CustomException(CODE_401, ORDER_ERROR);
         }
     }
-
+    private String getStringDate(){
+        Date current = new Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+                "yyyyMMddHHmmss");
+        String time = sdf.format(current);
+        return time;
+    }
     public Page<ParkingOrder> findByPage(Integer page,Integer pageSize){
         return parkingOrderRepository.findAll(PageRequest.of(page-1,pageSize));
     }
