@@ -58,7 +58,7 @@ public class PublicParkingLotControllerTest {
     @Test
     public void should_return_all_parking_lot_when_get() throws Exception {
         //when
-        MvcResult mvcResult = mockMvc.perform(get("/parking-lots"))
+        MvcResult mvcResult = mockMvc.perform(get("/public-parking-lots"))
                 .andExpect(status().isOk()).andReturn();
         JSONArray resultArray = new JSONArray(mvcResult.getResponse().getContentAsString());
         //then
@@ -71,7 +71,7 @@ public class PublicParkingLotControllerTest {
         PublicParkingLot parkingLot = new PublicParkingLot(null,"停车场1",10,"南方软件",1,1,1);
         //when
         String jsonString = new ObjectMapper().writeValueAsString(parkingLot);
-        MvcResult mvcResult = mockMvc.perform(post("/parking-lots")
+        MvcResult mvcResult = mockMvc.perform(post("/public-parking-lots")
                 .content(jsonString)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn();
@@ -82,7 +82,7 @@ public class PublicParkingLotControllerTest {
 
     @Test
     public void should_return_parking_lot_by_page_when_get_by_page() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/parking-lots")
+        MvcResult mvcResult = mockMvc.perform(get("/public-parking-lots")
                 .param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk()).andReturn();
 
@@ -94,7 +94,7 @@ public class PublicParkingLotControllerTest {
     public void should_update_parking_lot_when_patch() throws Exception {
         PublicParkingLot parkingLot = parkingLots.get(0);
         parkingLot.setStatus(0);
-        MvcResult mvcResult = mockMvc.perform(patch("/parking-lots/" + parkingLots.get(0).getId())
+        MvcResult mvcResult = mockMvc.perform(patch("/public-parking-lots/" + parkingLots.get(0).getId())
                 .content(JSON.toJSONString(parkingLot)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
@@ -106,7 +106,7 @@ public class PublicParkingLotControllerTest {
 
     @Test
     public void should_return_filter_parking_lot_when_search() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/parking-lots").param("name", "2")
+        MvcResult mvcResult = mockMvc.perform(get("/public-parking-lots").param("name", "2")
                 .param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
@@ -116,7 +116,7 @@ public class PublicParkingLotControllerTest {
 
     @Test
     public void should_return_filter_parking_lot_when_search_with_capacity() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/parking-lots")
+        MvcResult mvcResult = mockMvc.perform(get("/public-parking-lots")
                 .param("min", "14").param("max","16")
                 .param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk()).andReturn();
