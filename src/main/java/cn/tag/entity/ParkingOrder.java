@@ -21,8 +21,8 @@ public class ParkingOrder implements Serializable {
 
     private String carNum;//车牌
     private Integer carUserId;//车主
-    private Date parkingCreate_Time;//停车开始时间
-    private Date parkingEndTime;//停车结束时间
+    private Long parkingCreate_Time;//停车开始时间
+    private Long parkingEndTime;//停车结束时间
     private Integer parkingBoyId;//停车服务人
     private String parkingWaitLocation;//停车取车点
     private String parkingLocation;//停车地点
@@ -37,5 +37,7 @@ public class ParkingOrder implements Serializable {
     private Double money;//整个订单钱
     private Double parkingMoney;//停车钱
     private Double fetchMoney;//取车钱
+
+
 
 }

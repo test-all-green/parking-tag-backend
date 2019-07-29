@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ParkingLotControllerTest {
+public class PublicParkingLotControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,9 +45,9 @@ public class ParkingLotControllerTest {
     @BeforeEach
     public void setupDb(){
         parkingLots = publicParkingLotRepository.saveAll(Arrays.asList(
-                new PublicParkingLot("停车场1",10),
-                new PublicParkingLot("停车场2",15),
-                new PublicParkingLot("停车场3",10)));
+                new PublicParkingLot(null,"停车场1",10,"南方软件",1,1,1),
+                new PublicParkingLot(null,"停车场2",15,"南方软件",1,1,1),
+                new PublicParkingLot(null,"停车场3",10,"南方软件",1,1,1)));
     }
 //
     @AfterEach
@@ -68,7 +68,7 @@ public class ParkingLotControllerTest {
     @Test
     public void should_return_200_when_post() throws Exception {
         //given
-        PublicParkingLot parkingLot = new PublicParkingLot("停车场1", 10);
+        PublicParkingLot parkingLot = new PublicParkingLot(null,"停车场1",10,"南方软件",1,1,1);
         //when
         String jsonString = new ObjectMapper().writeValueAsString(parkingLot);
         MvcResult mvcResult = mockMvc.perform(post("/parking-lots")
@@ -77,6 +77,7 @@ public class ParkingLotControllerTest {
                 .andExpect(status().isCreated()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
         Assertions.assertEquals(parkingLot.getParkingLotName(), resultObject.getString("parkingLotName"));
+        Assertions.assertEquals(parkingLot.getLocation(), resultObject.getString("location"));
     }
 
     @Test
@@ -91,13 +92,14 @@ public class ParkingLotControllerTest {
 
     @Test
     public void should_update_parking_lot_when_patch() throws Exception {
-        PublicParkingLot parkingLot = new PublicParkingLot("停车场A", null);
+        PublicParkingLot parkingLot = parkingLots.get(0);
+        parkingLot.setStatus(0);
         MvcResult mvcResult = mockMvc.perform(patch("/parking-lots/" + parkingLots.get(0).getId())
                 .content(JSON.toJSONString(parkingLot)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
         // 修改的字段
-        Assertions.assertEquals(parkingLot.getParkingLotName(), resultObject.getString("parkingLotName"));
+        Assertions.assertEquals(0, resultObject.getInt("status"));
         // 不修改的字段不变
         Assertions.assertEquals(parkingLots.get(0).getParkingLotCapacity().intValue(), resultObject.getInt("parkingLotCapacity"));
     }

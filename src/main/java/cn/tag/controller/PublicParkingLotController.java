@@ -14,9 +14,9 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/parking-lots")
+@RequestMapping("/public-parking-lots")
 @Slf4j
-public class ParkingLotController {
+public class PublicParkingLotController {
 
     @Autowired
     private ParkingLotService parkingLotService;
