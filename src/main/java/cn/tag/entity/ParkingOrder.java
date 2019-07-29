@@ -24,12 +24,12 @@ public class ParkingOrder implements Serializable {
     private Long parkingCreate_Time;//停车开始时间
     private Long parkingEndTime;//停车结束时间
     private Integer parkingBoyId;//停车服务人
-    private String parkingWaitLocation;//停车取车点
+    private String parkingWaitLocation;//停车交接点
     private String parkingLocation;//停车地点
     private String scheduledParkingArriveTime;//停车预计到达时间
     private Integer fetchBoyId;//取车服务人
-    private String fetchWaitLocation;//取车拿车点
-    private Long scheduledFetchArriveTime;//取车预计到达时间
+    private String fetchWaitLocation;//取车交接点
+    private String scheduledFetchArriveTime;//取车预计到达时间
     private Long scheduledParkingTime;//预计停车时长
     private Long createTime;//创建时间
     private Long endTime;//结束时间

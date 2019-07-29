@@ -1,7 +1,9 @@
 package cn.tag.controller;
 
+import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.service.ParkingOrderService;
+import cn.tag.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,5 +37,11 @@ public class ParkingOrderController {
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable Integer id,@RequestBody ParkingOrder parkingOrder){
         return ResponseEntity.ok(parkingOrderService.update(id,parkingOrder));
+    }
+
+//    @UserLoginToken
+    @GetMapping("/{userId}")
+    public ResponseEntity findByUserId(@PathVariable Integer userId){
+        return ResponseEntity.ok(parkingOrderService.findOrderOfUser(userId));
     }
 }

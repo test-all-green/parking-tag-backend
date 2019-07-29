@@ -1,12 +1,16 @@
 package cn.tag.service;
 
 import cn.tag.entity.ParkingOrder;
+import cn.tag.enums.OrderStatusEnum;
 import cn.tag.respository.ParkingOrderRepository;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -19,6 +23,8 @@ public class ParkingOrderService {
     }
 
     public ParkingOrder add(ParkingOrder parkingOrder){
+        parkingOrder.setCreateTime(System.currentTimeMillis());
+        parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
         return parkingOrderRepository.save(parkingOrder);
     }
 
@@ -29,5 +35,9 @@ public class ParkingOrderService {
     public ParkingOrder update(Integer id,ParkingOrder parkingOrder){
         parkingOrder.setId(id);
         return parkingOrderRepository.save(parkingOrder);
+    }
+
+    public List<ParkingOrder> findOrderOfUser(Integer userId) {
+        return parkingOrderRepository.findByCarUserIdOrderByCreateTimeDesc(userId);
     }
 }
