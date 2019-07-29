@@ -11,7 +11,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/test_all_green_test?characterEncoding=utf-8
     username: root
-    password: roottest
+    password: root
   jpa:
     hibernate:
       ddl-auto: create

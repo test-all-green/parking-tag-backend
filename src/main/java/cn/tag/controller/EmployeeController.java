@@ -1,7 +1,9 @@
 package cn.tag.controller;
 
-import cn.tag.Interceptor.UserLoginToken;
+import cn.tag.Interceptor.*;
+//import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.Employee;
+import cn.tag.Interceptor.AuthToken;
 import cn.tag.service.EmployeeService;
 import cn.tag.service.TokenService;
 import cn.tag.util.SHA1;
@@ -57,6 +59,7 @@ public class EmployeeController {
         userForBase.setId(employeeEmail.getId());
         userForBase.setEmail(employeeEmail.getEmail());
         userForBase.setEmployeePassword(employeeEmail.getEmployeePassword());
+        userForBase.setRoleId(employeeEmail.getRoleId());
     }
 
     private Object getObjectWhenPasswordEquals(HttpServletResponse response, JSONObject jsonObject, Employee userForBase) {
@@ -71,6 +74,7 @@ public class EmployeeController {
     /***
      * 这个请求需要验证token才能访问
      */
+    @AuthToken(role_name = "1")
     @UserLoginToken
     //@Apio(value = "获取信息", notes = "获取信息")
     @GetMapping(value = "/getMessage")
