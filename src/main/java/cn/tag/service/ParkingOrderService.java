@@ -2,6 +2,7 @@ package cn.tag.service;
 
 import cn.tag.entity.ParkingOrder;
 import cn.tag.enums.OrderStatusEnum;
+import cn.tag.exception.CustomException;
 import cn.tag.respository.ParkingOrderRepository;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import java.util.List;
 
 @Service
 public class ParkingOrderService {
+    public static final String CODE_401 = "401";
+    public static final String ORDER_ERROR = "您的车有未完成订单";
     @Autowired
     private ParkingOrderRepository parkingOrderRepository;
 
@@ -23,9 +26,14 @@ public class ParkingOrderService {
     }
 
     public ParkingOrder add(ParkingOrder parkingOrder){
-        parkingOrder.setCreateTime(System.currentTimeMillis());
-        parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
-        return parkingOrderRepository.save(parkingOrder);
+        String carNum = parkingOrder.getCarNum();
+        if(parkingOrderRepository.findOrdersByCarNumAndSatusNotF(carNum).size()==0) {
+            parkingOrder.setCreateTime(System.currentTimeMillis());
+            parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
+            return parkingOrderRepository.save(parkingOrder);
+        }else{
+            throw new CustomException(CODE_401, ORDER_ERROR);
+        }
     }
 
     public Page<ParkingOrder> findByPage(Integer page,Integer pageSize){
