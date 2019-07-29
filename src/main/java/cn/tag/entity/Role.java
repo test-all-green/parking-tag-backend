@@ -6,19 +6,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Character implements Serializable {
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String characteName;
+    private Integer id;
+    private String roleName;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    private List<Permission> permissionList;
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
 }

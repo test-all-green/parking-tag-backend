@@ -1,11 +1,10 @@
 package cn.tag.service;
 
-import cn.tag.entity.ParkingLot;
-import cn.tag.respository.ParkingLotRepository;
+import cn.tag.entity.PublicParkingLot;
+import cn.tag.respository.PublicParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -19,43 +18,41 @@ import java.util.List;
 public class ParkingLotService {
 
     @Autowired
-    private ParkingLotRepository parkingLotRepository;
+    private PublicParkingLotRepository publicParkingLotRepository;
 
-    public List<ParkingLot> findAll() {
-        return parkingLotRepository.findAll();
+    public List<PublicParkingLot> findAll() {
+        return publicParkingLotRepository.findAll();
     }
 
-    public ParkingLot add(ParkingLot parkingLot) {
-        return parkingLotRepository.save(parkingLot);
+    public PublicParkingLot add(PublicParkingLot parkingLot) {
+        return publicParkingLotRepository.save(parkingLot);
     }
 
-    public Page<ParkingLot> findByPage(Integer page, Integer pageSize) {
-        return parkingLotRepository.findAll(PageRequest.of(page-1, pageSize));
+    public Page<PublicParkingLot> findByPage(Integer page, Integer pageSize) {
+        return publicParkingLotRepository.findAll(PageRequest.of(page-1, pageSize));
     }
 
-    public ParkingLot update(Integer id, ParkingLot parkingLot) {
-        ParkingLot lot = parkingLotRepository.findById(id).get();
-        if(parkingLot.getParkingLotName() != null){
-            lot.setParkingLotName(parkingLot.getParkingLotName());
-        }
-        if(parkingLot.getParkingLotCapacity() != null){
-            lot.setParkingLotCapacity(parkingLot.getParkingLotCapacity());
-        }
-        if(parkingLot.getParkingLotStatus() != null){
-            lot.setParkingLotStatus(parkingLot.getParkingLotStatus());
-        }
-        if(parkingLot.getParkingStaff() != null){
-            lot.setParkingStaff(parkingLot.getParkingStaff());
-        }
-        return parkingLotRepository.save(lot);
-    }
+//    public PublicParkingLot update(Integer id, PublicParkingLot parkingLot) {
+//        PublicParkingLot lot = publicParkingLotRepository.findById(id).get();
+//        if(parkingLot.getParkingLotName() != null){
+//            lot.setParkingLotName(parkingLot.getParkingLotName());
+//        }
+//        if(parkingLot.getParkingLotCapacity() != null){
+//            lot.setParkingLotCapacity(parkingLot.getParkingLotCapacity());
+//        }
+//        if(parkingLot.getStatus() != null){
+//            lot.setStatus(parkingLot.getStatus());
+//        }
+//
+//        return publicParkingLotRepository.save(lot);
+//    }
 
-    public Page<ParkingLot> findByPage(Integer page, Integer pageSize, String name, Integer min, Integer max) {
+    public Page<PublicParkingLot> findByPage(Integer page, Integer pageSize, String name, Integer min, Integer max) {
 
-        Specification<ParkingLot> specification = new Specification<ParkingLot>() {
+        Specification<PublicParkingLot> specification = new Specification<PublicParkingLot>() {
 
             @Override
-            public Predicate toPredicate(Root<ParkingLot> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+            public Predicate toPredicate(Root<PublicParkingLot> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 Predicate parkingLotName = null;
                 Predicate parkingLotCapacity = null;
                 if(name != null){
@@ -76,6 +73,6 @@ public class ParkingLotService {
                 return null;
             }
         };
-        return parkingLotRepository.findAll(specification, PageRequest.of(page-1, pageSize));
+        return publicParkingLotRepository.findAll(specification, PageRequest.of(page-1, pageSize));
     }
 }

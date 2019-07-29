@@ -18,7 +18,7 @@ public class PublicParkingLot implements Serializable {
     private Integer id;
 
     @Column(nullable = false, length = 25)
-    private String parkingName;
+    private String parkingLotName;
 
     private Integer parkingLotCapacity;
 
@@ -26,6 +26,7 @@ public class PublicParkingLot implements Serializable {
 
     private Integer remain;
     private Integer regionId;
+    private Integer status;
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)

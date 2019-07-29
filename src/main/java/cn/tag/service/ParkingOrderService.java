@@ -1,6 +1,5 @@
 package cn.tag.service;
 
-import cn.tag.entity.ParkingLot;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.respository.ParkingOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;

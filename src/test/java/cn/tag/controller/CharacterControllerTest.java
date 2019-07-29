@@ -1,7 +1,7 @@
 package cn.tag.controller;
 
-import cn.tag.entity.StaffCharacter;
-import cn.tag.respository.StaffCharacterRepository;
+import cn.tag.entity.Role;
+import cn.tag.respository.RoleRepository;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.jupiter.api.AfterEach;
@@ -24,35 +24,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StaffCharacterControllerTest {
+public class CharacterControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
-    StaffCharacterRepository staffCharacterRepository;
+    RoleRepository roleRepository;
 
     @BeforeEach
     public void before_test(){
-        staffCharacterRepository.save(new StaffCharacter("泊车仔"));
-        staffCharacterRepository.save(new StaffCharacter("经理"));
+        roleRepository.save(new Role("泊车仔"));
+        roleRepository.save(new Role("经理"));
     }
 
     @AfterEach
     public void after_test(){
-        staffCharacterRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @Test
     public void should_return_staff_character_list_when_query() throws Exception {
         //given
-        List<StaffCharacter> staffCharacterList = staffCharacterRepository.findAll();
+        List<Role> staffCharacterList = roleRepository.findAll();
         //when
         ResultActions resultActions = this.mockMvc.perform(get("/staff-characters"));
         //then
         resultActions.andExpect(status().isOk());
-        Assertions.assertEquals(staffCharacterList.get(0).getCharacterName()
-            , JSONObject.parseObject(JSONArray.parseArray(resultActions.andReturn().getResponse().getContentAsString()).get(0).toString()).getString("characterName"));
+        Assertions.assertEquals(staffCharacterList.get(0).getRoleName()
+            , JSONObject.parseObject(JSONArray.parseArray(resultActions.andReturn().getResponse().getContentAsString()).get(0).toString()).getString("roleName"));
     }
 
 }

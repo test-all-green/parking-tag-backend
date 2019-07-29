@@ -19,9 +19,21 @@ public class Employee {
     private String employeeName;
     private String email;
     private String employeePassword;
-    private String telephone;
+    private String phone;
     private String workStatus;
     private Integer status; //账号状态，0正常，1注销
     private Double moneny;
+    private Integer roleId;
 
+    public Employee(String employeeId, String employeeName, String email, String employeePassword, String phone, String workStatus, Integer status, Integer roleId) {
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+        this.email = email;
+        this.employeePassword = employeePassword;
+        this.phone = phone;
+        this.workStatus = workStatus;
+        this.status = status;
+        this.roleId = roleId;
+
+    }
 }

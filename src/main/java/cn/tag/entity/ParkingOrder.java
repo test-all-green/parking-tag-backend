@@ -17,7 +17,7 @@ public class ParkingOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int Id;
+    private Integer Id;
 
     private String carNum;//车牌
     private Integer carUserId;//车主
