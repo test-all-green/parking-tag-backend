@@ -18,4 +18,8 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String regionName;
+
+    public Region(String regionName) {
+        this.regionName = regionName;
+    }
 }
