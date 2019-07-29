@@ -102,5 +102,18 @@ public class EmployeeControllerTest {
         resultActions.andExpect(status().isOk());
         Assertions.assertNotEquals(id, employeeRepository.findById(employee.getId()).get().getId());
     }
+    @Test
+    public void should_return_message_ok_when_register_a_employee() throws Exception {
+        //given
+        Employee employee = employeeRepository.findAll().get(0);
+        Integer id = roleRepository.findAll().get(0).getId();
+        employee.setRoleId(2);
+        //when
+        ResultActions resultActions = this.mockMvc.perform(put("/employees/{id}",employee.getId().toString())
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON_UTF8).content(JSON.toJSONString(employee)));
+        //then
+        resultActions.andExpect(status().isOk());
+        Assertions.assertNotEquals(id, employeeRepository.findById(employee.getId()).get().getId());
+    }
 
 }

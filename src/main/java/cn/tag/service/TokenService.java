@@ -13,7 +13,7 @@ public class TokenService {
 	public String getToken(Employee user) {
 		Date start = new Date();
 		//设置有效时间（一小时有效时间）
-		long currentTime = System.currentTimeMillis() + 60 * 60 * 1000;
+		long currentTime = System.currentTimeMillis() + 24 *60 * 60 * 1000;
 		Date end = new Date(currentTime);
 		String token = "";
 		

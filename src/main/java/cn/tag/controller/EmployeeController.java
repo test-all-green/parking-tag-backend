@@ -4,6 +4,7 @@ import cn.tag.Interceptor.*;
 //import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.Employee;
 import cn.tag.Interceptor.AuthToken;
+import cn.tag.exception.CustomException;
 import cn.tag.service.EmployeeService;
 import cn.tag.service.TokenService;
 import cn.tag.util.SHA1;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin("*")
@@ -37,6 +39,17 @@ public class EmployeeController {
     @Autowired
     private TokenService tokenService;
 
+    @PostMapping(value = "/register")
+    public ResponseEntity register(@RequestBody Employee employee){
+        employeeService.register(employee);
+       return ResponseEntity.ok(getRegisterSuccessMap());
+    }
+    public Map getRegisterSuccessMap(){
+        Map map = new HashMap();
+        map.put("code","200");
+        map.put("success","恭喜你注册成功");
+        return map;
+    }
     @PostMapping(value = "/login")
     public Object login(@RequestBody Map<String,Object> params,
                         HttpServletResponse response) {
