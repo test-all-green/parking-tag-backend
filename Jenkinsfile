@@ -30,8 +30,8 @@ pipeline {
             }
             steps {
                 sh '''
-                    scp -o StrictHostKeyChecking=no -i /ooclserver_rsa -f /var/lib/jenkins/workspace/parking-tag-backend/build/libs/parking-tag-1.0-SNAPSHOT.jar root@39.98.243.100:/opt/parking-tag-backend/
-                    ssh -o StrictHostKeyChecking=no -i /ooclserver_rsa root@39.98.243.100 < deploy.sh
+                    scp -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa -f /var/lib/jenkins/workspace/parking-tag-backend/build/libs/parking-tag-1.0-SNAPSHOT.jar root@39.98.243.100:/opt/parking-tag-backend/
+                    ssh -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa root@39.98.243.100 < deploy.sh
                 '''
             }
         }
