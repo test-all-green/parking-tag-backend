@@ -28,7 +28,12 @@ public class PublicParkingLot implements Serializable {
     private Integer regionId;
     private Integer status;
 
-//    @Id
+    public PublicParkingLot(String parkingLotName, Integer parkingLotCapacity) {
+        this.parkingLotName = parkingLotName;
+        this.parkingLotCapacity = parkingLotCapacity;
+    }
+
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    private int id;
 //

@@ -32,20 +32,20 @@ public class ParkingLotService {
         return publicParkingLotRepository.findAll(PageRequest.of(page-1, pageSize));
     }
 
-//    public PublicParkingLot update(Integer id, PublicParkingLot parkingLot) {
-//        PublicParkingLot lot = publicParkingLotRepository.findById(id).get();
-//        if(parkingLot.getParkingLotName() != null){
-//            lot.setParkingLotName(parkingLot.getParkingLotName());
-//        }
-//        if(parkingLot.getParkingLotCapacity() != null){
-//            lot.setParkingLotCapacity(parkingLot.getParkingLotCapacity());
-//        }
-//        if(parkingLot.getStatus() != null){
-//            lot.setStatus(parkingLot.getStatus());
-//        }
-//
-//        return publicParkingLotRepository.save(lot);
-//    }
+    public PublicParkingLot update(Integer id, PublicParkingLot parkingLot) {
+        PublicParkingLot lot = publicParkingLotRepository.findById(id).get();
+        if(parkingLot.getParkingLotName() != null){
+            lot.setParkingLotName(parkingLot.getParkingLotName());
+        }
+        if(parkingLot.getParkingLotCapacity() != null){
+            lot.setParkingLotCapacity(parkingLot.getParkingLotCapacity());
+        }
+        if(parkingLot.getStatus() != null){
+            lot.setStatus(parkingLot.getStatus());
+        }
+
+        return publicParkingLotRepository.save(lot);
+    }
 
     public Page<PublicParkingLot> findByPage(Integer page, Integer pageSize, String name, Integer min, Integer max) {
 

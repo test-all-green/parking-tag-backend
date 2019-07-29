@@ -44,10 +44,10 @@ public class ParkingLotController {
         return ResponseEntity.ok().body(parkingLotPage);
     }
 
-//    @PatchMapping("/{id}")
-//    public ResponseEntity update(@PathVariable Integer id, @RequestBody PublicParkingLot parkingLot){
-//        PublicParkingLot update = parkingLotService.update(id, parkingLot);
-//        return ResponseEntity.ok().body(update);
-//    }
+    @PatchMapping("/{id}")
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody PublicParkingLot parkingLot){
+        PublicParkingLot update = parkingLotService.update(id, parkingLot);
+        return ResponseEntity.ok().body(update);
+    }
 
 }
