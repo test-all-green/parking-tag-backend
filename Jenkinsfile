@@ -24,6 +24,11 @@ pipeline {
                 '''
             }
         }
+        stage('Approve of Deploy Prod') {
+             steps {
+                 input message: 'deploy to Prod?'
+             }
+        }
         stage('Deploy Dev') {
             agent {
                 label 'master'
@@ -35,11 +40,7 @@ pipeline {
                 '''
             }
         }
-        stage('Approve of Deploy Prod') {
-          steps {
-            input message: 'deploy to Prod?'
-          }
-        }
+
 
         stage('Deploy Prod') {
             agent {
