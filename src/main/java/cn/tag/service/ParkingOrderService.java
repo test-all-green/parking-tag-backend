@@ -61,4 +61,7 @@ public class ParkingOrderService {
         return parkingOrderRepository.findById(orderId).get();
     }
 
+    public List<ParkingOrder> findOrderByCarUserId(Integer carUserId) {
+        return parkingOrderRepository.findByCarUserId(carUserId);
+    }
 }
