@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 @CrossOrigin("*")
 @RestController
@@ -28,8 +29,9 @@ public class ShareParkingLotController {
     }
 
     @GetMapping(params = {"orderId"})
-    public ResponseEntity findByOrderId(@RequestParam(name = "orderId") Integer orderId){
-        return ResponseEntity.ok(shareParkingLotService.findListByOrderId(orderId));
+    public ResponseEntity findByOrderId(@RequestParam(name = "orderId") Integer orderId) throws ParseException {
+        List<ShareParkingLot> shareParkingLotList = shareParkingLotService.findListByOrderId(orderId);
+        return ResponseEntity.ok(shareParkingLotList);
     }
 
     @GetMapping
