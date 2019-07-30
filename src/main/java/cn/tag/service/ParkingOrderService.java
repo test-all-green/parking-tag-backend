@@ -31,7 +31,7 @@ public class ParkingOrderService {
         String carNum = parkingOrder.getCarNum();
         if(parkingOrderRepository.findOrdersByCarNumAndSatusNotF(carNum).size()==0) {
             parkingOrder.setCarUserId(Integer.valueOf(TokenUtil.getTokenUserId()));
-            parkingOrder.setCreateTime(Long.valueOf(getStringDate()));
+            parkingOrder.setCreateTime(System.currentTimeMillis());
             parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
             return parkingOrderRepository.save(parkingOrder);
         }else{
