@@ -40,17 +40,5 @@ pipeline {
                 '''
             }
         }
-
-
-        stage('Deploy Prod') {
-            agent {
-                label 'master'
-            }
-            steps {
-                sh '''
-                    echo deploy prod
-                '''
-            }
-        }
     }
 }

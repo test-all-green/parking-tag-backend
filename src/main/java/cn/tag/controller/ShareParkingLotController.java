@@ -71,6 +71,19 @@ public class ShareParkingLotController {
         return ResponseEntity.ok().body(publish);
     }
 
+    /**
+     * 取消发布共享车位
+     *
+     * @param id
+     * @return
+     */
+    @PutMapping("/cancel/{id}")
+    @EmployeeToken
+    public ResponseEntity cancelShareParkingLot(@PathVariable Integer id){
+        ShareParkingLot publish = shareParkingLotService.cancelPublish(id);
+        return ResponseEntity.ok().body(publish);
+    }
+
     @DeleteMapping("/{id}")
     @EmployeeToken
     public ResponseEntity delete(@PathVariable Integer id) {
