@@ -22,7 +22,7 @@ public class Employee {
     private String phone;
     private String workStatus;
     private Integer status; //账号状态，0正常，1注销
-    private Double moneny;
+    private Double money;
     private Integer roleId;
     private Integer regionId;
 
