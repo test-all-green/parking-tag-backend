@@ -2,7 +2,7 @@ package cn.tag.enums;
 
 public enum OrderStatusEnum {
 
-    PARKING_WAIT("PW", "等待受理"),
+    PARKING_WAIT("PW", "无人受理"),
     PARKING_ING("PI", "存取中"),
     //    HAVE_PARKING("HP","已停车"),
 //    FETCH_WAIT("FW","等待取车受理"),

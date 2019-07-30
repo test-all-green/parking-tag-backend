@@ -39,74 +39,86 @@ public class ParkingOrderControllerTest {
 
     @BeforeEach
     public void setupDb() {
-//        parkingOrderList = parkingOrderRepository.saveAll(Arrays.asList(
-//                new ParkingOrder(null,"粤A12345", 1, null,
-//                        null, 2, "等待点", "停车地点", "201907290923",
-//                        null, null, null, 3000L, new Date().getTime(),
-//                        null, "WP", null, null, null,0,0),
-//                new ParkingOrder(null,"粤A12345", 1, null,
-//                        null, 2, "等待点", "停车地点", "201907290923",
-//                        null, null, null, 3000L, new Date().getTime(),
-//                        null, "WP", null, null, null, 0),
-//                new ParkingOrder(null,"粤A12345", 2, null,
-//                        null, 2, "等待点", "停车地点", "201907290923",
-//                        null, null, null, 3000L, new Date().getTime(),
-//                        null, "WP", null, null, null, 0)));
+        ParkingOrder order1 = new ParkingOrder();
+        order1.setCarNum("A12341");
+        order1.setCreateTime(new Date().getTime());
+        order1.setType(0);
+        order1.setStatus("WP");
+        ParkingOrder order2 = new ParkingOrder();
+        order2.setCarNum("A12342");
+        order2.setCreateTime(new Date().getTime());
+        order2.setType(1);
+        order2.setStatus("PI");
+        ParkingOrder order3 = new ParkingOrder();
+        order3.setCarNum("A12343");
+        order3.setCreateTime(new Date().getTime());
+        order3.setType(0);
+        order3.setStatus("wp");
+        parkingOrderList = parkingOrderRepository.saveAll(Arrays.asList(order1, order2, order3));
     }
-//    @AfterEach
-//    public void cleanAll(){
-//        parkingOrderRepository.deleteAll();
-//    }
-//    @Test
-//    public void should_return_all_parking_order_when_get() throws Exception {
-//        //when
-//        MvcResult mvcResult = mockMvc.perform(get("/parking-orders"))
-//                .andExpect(status().isOk()).andReturn();
-//        JSONArray resultArray = new JSONArray(mvcResult.getResponse().getContentAsString());
-//        //then
-//        Assertions.assertEquals(parkingOrderList.size(), resultArray.length());
-//    }
-//    @Test
-//    public void should_return_200_when_post() throws Exception {
-//        //given
-//        ParkingOrder parkingOrder = new ParkingOrder("12345",1,1,new Date(),new Date(),1,1);
-//        //when
-//        String jsonString = new ObjectMapper().writeValueAsString(parkingOrder);
-//        MvcResult mvcResult = mockMvc.perform(post("/parking-orders")
-//                .content(jsonString)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated()).andReturn();
-//        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-//        Assertions.assertEquals(parkingOrder.getCarNumber(), resultObject.getString("carNumber"));
-//    }
-//
-//    @Test
-//    public void should_return_parking_order_by_page_when_get_by_page() throws Exception {
-//        MvcResult mvcResult = mockMvc.perform(get("/parking-orders")
-//                .param("page", "1").param("pageSize", "2"))
-//                .andExpect(status().isOk()).andReturn();
-//
-//        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-//        Assertions.assertEquals(2,resultObject.getJSONArray("content").length());
-//    }
-//
-//    @Test
-//    public void should_update_parking_order_when_put() throws Exception {
-//        ParkingOrder parkingOrder = new ParkingOrder("88888",1,1,new Date(),new Date(),1,1);
-//
-//        MvcResult mvcResult = mockMvc.perform(put("/parking-orders/" + parkingOrderList.get(0).getId())
-//                .content(JSON.toJSONString(parkingOrder)).contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk()).andReturn();
-//        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
-//        // 修改的字段
-//        Assertions.assertEquals(parkingOrder.getCarNumber(), resultObject.getString("carNumber"));
-//    }
+    @AfterEach
+    public void cleanAll(){
+        parkingOrderRepository.deleteAll();
+    }
+    @Test
+    public void should_return_all_parking_order_when_get() throws Exception {
+        //when
+        MvcResult mvcResult = mockMvc.perform(get("/parking-orders"))
+                .andExpect(status().isOk()).andReturn();
+        JSONArray resultArray = new JSONArray(mvcResult.getResponse().getContentAsString());
+        //then
+        Assertions.assertEquals(parkingOrderList.size(), resultArray.length());
+    }
+    @Test
+    public void should_return_200_when_post() throws Exception {
+        //given
+        ParkingOrder parkingOrder = new ParkingOrder();
+        parkingOrder.setCarNum("B888888");
+        parkingOrder.setCreateTime(new Date().getTime());
+        parkingOrder.setType(0);
+        parkingOrder.setStatus("WP");
+        //when
+        String jsonString = new ObjectMapper().writeValueAsString(parkingOrder);
+
+        MvcResult mvcResult = mockMvc.perform(post("/parking-orders")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()).andReturn();
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(parkingOrder.getCarNum(), resultObject.getString("carNum"));
+    }
 
     @Test
-    public void should_get_order_with_user_id_1_when_get() {
+    public void should_return_parking_order_by_page_when_get_by_page() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/parking-orders")
+                .param("page", "1").param("pageSize", "2"))
+                .andExpect(status().isOk()).andReturn();
 
-//        mockMvc.perform(get("/parking-orders").param("userId", 1)).
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        Assertions.assertEquals(2,resultObject.getJSONArray("content").length());
     }
+
+    @Test
+    public void should_update_parking_order_when_put() throws Exception {
+        ParkingOrder parkingOrder = new ParkingOrder();
+        parkingOrder.setCarNum("B55551");
+        parkingOrder.setCreateTime(new Date().getTime());
+        parkingOrder.setType(0);
+        parkingOrder.setStatus("WP");
+
+        MvcResult mvcResult = mockMvc.perform(put("/parking-orders/" + parkingOrderList.get(0).getId())
+                .content(JSON.toJSONString(parkingOrder)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+        JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        // 修改的字段
+        Assertions.assertEquals(parkingOrder.getCarNum(), resultObject.getString("carNum"));
+    }
+
+//    @Test
+//    public void should_get_order_with_user_id_1_when_get() {
+//
+//        mockMvc.perform(get("/parking-orders").param("userId", 1)).
+//    }
 //    @Test
 //    public void should_get_exceptionwhen_get_two_employee_grab_sam_order() throws Exception {
 ////        ParkingOrder parkingOrder = new ParkingOrder();
