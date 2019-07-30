@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ShareParkingLotRepository extends JpaRepository<ShareParkingLot,Integer> {
-    List<ShareParkingLot> findAllByUserId(Integer userId);
+public interface ShareParkingLotRepository extends JpaRepository<ShareParkingLot, Integer> {
+    List<ShareParkingLot> findByUserId(Integer userId);
 }

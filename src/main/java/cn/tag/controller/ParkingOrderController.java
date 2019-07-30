@@ -40,13 +40,20 @@ public class ParkingOrderController {
         return ResponseEntity.ok(parkingOrderService.findByPage(page, pageSize));
     }
 
-//    @EmployeeToken
+    @EmployeeToken
+    @GetMapping("/{carUserId}")
+    public ResponseEntity findOrderByUserId(@PathVariable Integer carUserId) {
+        System.out.println("carUserId:" + carUserId);
+        return ResponseEntity.ok(parkingOrderService.findOrderByCarUserId(carUserId));
+    }
+
+    //    @EmployeeToken
     @PostMapping
     public ResponseEntity add(@RequestBody ParkingOrder parkingOrder) {
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingOrderService.add(parkingOrder));
     }
 
-//    @EmployeeToken
+    //    @EmployeeToken
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable Integer id, @RequestBody ParkingOrder parkingOrder) {
         return ResponseEntity.ok(parkingOrderService.update(id, parkingOrder));
