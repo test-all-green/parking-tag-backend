@@ -26,7 +26,7 @@ public class PublicParkingLot implements Serializable {
 
     private Integer remain;
     private Integer regionId;
-    private Integer status;
+    private Integer status;//是否注销
 
     public PublicParkingLot(String parkingLotName, Integer parkingLotCapacity) {
         this.parkingLotName = parkingLotName;

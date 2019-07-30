@@ -13,10 +13,9 @@ logging:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://rm-wz99tyk065h7mj4q5bo.mysql.rds.aliyuncs.com/test_all_green?characterEncoding=utf-8
     url: jdbc:mysql://127.0.0.1:3306/test_all_green?characterEncoding=utf-8
     username: root
-    password: 123456
+    password: root
   jpa:
     hibernate:
       ddl-auto: update

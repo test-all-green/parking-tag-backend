@@ -5,18 +5,27 @@ import cn.tag.entity.ShareParkingLot;
 import cn.tag.service.ShareParkingLotService;
 import cn.tag.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/share-parking-lots")
 public class ShareParkingLotController {
 
     @Autowired
     private ShareParkingLotService shareParkingLotService;
+
+    @GetMapping(params = {"page", "pageSize"})
+    @EmployeeToken
+    public ResponseEntity findByPage(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
+        Page<ShareParkingLot> shareParkingLots = shareParkingLotService.findByPage(page,pageSize);
+        return ResponseEntity.ok().body(shareParkingLots);
+    }
 
     @GetMapping
     @EmployeeToken
@@ -49,11 +58,16 @@ public class ShareParkingLotController {
      * @return
      */
     @PutMapping("/{id}")
+    @EmployeeToken
     public ResponseEntity publishShareParkingLot(@PathVariable Integer id, @RequestBody ShareParkingLot shareParkingLot){
         ShareParkingLot publish = shareParkingLotService.publish(id, shareParkingLot);
         return ResponseEntity.ok().body(publish);
     }
 
-
+    @DeleteMapping("/{id}")
+    @EmployeeToken
+    public ResponseEntity delete(@PathVariable Integer id) {
+        return shareParkingLotService.deleteByID(id)?ResponseEntity.ok().build():ResponseEntity.badRequest().build();
+    }
 
 }

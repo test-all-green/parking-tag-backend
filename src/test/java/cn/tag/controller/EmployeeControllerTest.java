@@ -1,11 +1,13 @@
 package cn.tag.controller;
 
 
+import cn.tag.entity.Region;
 import cn.tag.entity.Role;
 import cn.tag.entity.Employee;
 import cn.tag.enums.EmployeeStatusEnum;
 import cn.tag.enums.WorkStatusEnum;
 import cn.tag.respository.EmployeeRepository;
+import cn.tag.respository.RegionRepository;
 import cn.tag.respository.RoleRepository;
 import cn.tag.util.SHA1;
 import com.alibaba.fastjson.JSON;
@@ -42,15 +44,21 @@ public class EmployeeControllerTest {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    RegionRepository regionRepository;
+
     @BeforeEach
     public void before_test() {
+        regionRepository.save(new Region("香洲区"));
+        regionRepository.save(new Region("番禺区"));
         roleRepository.save(new Role("泊车仔"));
         roleRepository.save(new Role("经理"));
         Role role = roleRepository.findAll().get(0);
+        Region region = regionRepository.findAll().get(0);
         employeeRepository.save(new Employee("EM532736", "张三", "635653@qq.com",
-                SHA1.encode("123456"), "13514155874", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), 1, 0));
+                SHA1.encode("123456"), "13514155874", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), role.getId(), region.getId()));
         employeeRepository.save(new Employee("EM538774", "李四", "123456789@qq.com",
-                SHA1.encode("123456"), "13515458746", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), 1, 0));
+                SHA1.encode("123456"), "13515458746", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), role.getId(), region.getId()));
 
     }
 
@@ -64,8 +72,9 @@ public class EmployeeControllerTest {
     public void should_created_status_when_create_account() throws Exception {
         //given
         Role role = roleRepository.findAll().get(0);
+        Region region = regionRepository.findAll().get(0);
         Employee employee = new Employee("EM532886", "赵武", "635654353@qq.com",
-                SHA1.encode("123456"), "13514155875", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), 1, 0);
+                SHA1.encode("123456"), "13514155875", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), role.getId(), region.getId());
         int currentSize = employeeRepository.findAll().size();
         //when
         ResultActions resultActions = this.mockMvc.perform(post("/employees")
@@ -91,20 +100,6 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_ok_status_when_modify_staff() throws Exception {
-        //given
-        Employee employee = employeeRepository.findAll().get(0);
-        Integer id = roleRepository.findAll().get(0).getId();
-        employee.setRoleId(2);
-        //when
-        ResultActions resultActions = this.mockMvc.perform(put("/employees/{id}", employee.getId().toString())
-                .contentType(MediaType.APPLICATION_PROBLEM_JSON_UTF8).content(JSON.toJSONString(employee)));
-        //then
-        resultActions.andExpect(status().isOk());
-        Assertions.assertNotEquals(id, employeeRepository.findById(employee.getId()).get().getId());
-    }
-
-    @Test
-    public void should_return_message_ok_when_register_a_employee() throws Exception {
         //given
         Employee employee = employeeRepository.findAll().get(0);
         Integer id = roleRepository.findAll().get(0).getId();

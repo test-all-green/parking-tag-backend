@@ -23,7 +23,6 @@ public class PublicParkingLotController {
     @GetMapping
     public ResponseEntity findAll(){
         List<PublicParkingLot> parkingLots = publicParkingLotService.findAll();
-//        return ResponseEntity.ok().body(parkingLots);
         return ResponseEntity.ok(parkingLots);
     }
 
@@ -43,10 +42,16 @@ public class PublicParkingLotController {
         return ResponseEntity.ok().body(parkingLotPage);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable Integer id, @RequestBody PublicParkingLot parkingLot){
         PublicParkingLot update = publicParkingLotService.update(id, parkingLot);
         return ResponseEntity.ok().body(update);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Integer id){
+        publicParkingLotService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
 }
