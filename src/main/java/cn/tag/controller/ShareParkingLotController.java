@@ -27,6 +27,11 @@ public class ShareParkingLotController {
         return ResponseEntity.ok().body(shareParkingLots);
     }
 
+    @GetMapping(params = {"orderId"})
+    public ResponseEntity findByOrderId(@RequestParam(name = "orderId") Integer orderId){
+        return ResponseEntity.ok(shareParkingLotService.findListByOrderId(orderId));
+    }
+
     @GetMapping
     @EmployeeToken
     public ResponseEntity findByUserId(){

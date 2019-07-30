@@ -7,18 +7,15 @@ import cn.tag.enums.OrderStatusEnum;
 import cn.tag.exception.CustomException;
 import cn.tag.respository.ParkingOrderRepository;
 import cn.tag.respository.RegionRepository;
-import cn.tag.respository.UserRespository;
+import cn.tag.respository.UserRepository;
 import cn.tag.util.TokenUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class ParkingOrderService {
     @Autowired
     private RegionRepository regionRepository;
     @Autowired
-    private UserRespository userRespository;
+    private UserRepository userRepository;
 
     public List<ParkingOrder> findAll() {
         return parkingOrderRepository.findAll();
@@ -39,7 +36,7 @@ public class ParkingOrderService {
 
     public ParkingOrder add(ParkingOrder parkingOrder) {
         String carNum = parkingOrder.getCarNum();
-        if (parkingOrderRepository.findOrdersByCarNumAndSatusNotF(carNum).size() == 0) {
+        if (parkingOrderRepository.findOrdersByCarNumAndStatusNotF(carNum).size() == 0) {
             parkingOrder.setCarUserId(Integer.valueOf(TokenUtil.getTokenUserId()));
             parkingOrder.setCreateTime(System.currentTimeMillis());
             parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
@@ -71,6 +68,7 @@ public class ParkingOrderService {
     }
 
     public ParkingOrder findOrderByOrderId(Integer orderId) {
+//        return parkingOrderRepository.findAll()
         return parkingOrderRepository.findById(orderId).get();
     }
 
@@ -108,7 +106,7 @@ public class ParkingOrderService {
         jsonObject.put("regionId", parkingOrder.getRegionId());
         Region region = regionRepository.findById(parkingOrder.getRegionId()).get();
         jsonObject.put("regionName", region.getRegionName());
-        User user = userRespository.findById(parkingOrder.getCarUserId()).get();
+        User user = userRepository.findById(parkingOrder.getCarUserId()).get();
         jsonObject.put("phone", user.getPhone());
         return jsonObject;
     }

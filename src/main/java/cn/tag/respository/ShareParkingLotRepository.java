@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ShareParkingLotRepository extends JpaRepository<ShareParkingLot, Integer> {
     List<ShareParkingLot> findByUserId(Integer userId);
+    List<ShareParkingLot> findByRegionId(Integer regionId);
 }

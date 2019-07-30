@@ -1,5 +1,6 @@
 package cn.tag.controller;
 
+import cn.tag.Interceptor.EmployeeToken;
 import cn.tag.entity.PublicParkingLot;
 import cn.tag.service.PublicParkingLotService;
 import lombok.extern.slf4j.Slf4j;
@@ -54,4 +55,9 @@ public class PublicParkingLotController {
         return ResponseEntity.ok().build();
     }
 
+//    @EmployeeToken
+    @GetMapping(params = {"orderId"})
+    public ResponseEntity findByOrderId(@RequestParam(name = "orderId") Integer orderId){
+        return ResponseEntity.ok(publicParkingLotService.findListByOrderId(orderId));
+    }
 }

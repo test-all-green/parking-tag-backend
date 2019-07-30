@@ -1,5 +1,6 @@
 package cn.tag.service;
 
+import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.ShareParkingLot;
 import cn.tag.exception.CustomException;
 import cn.tag.respository.ShareParkingLotRepository;
@@ -16,6 +17,8 @@ public class ShareParkingLotService {
     @Autowired
     private ShareParkingLotRepository shareParkingLotRepository;
 
+    @Autowired
+    private ParkingOrderService parkingOrderService;
     public List<ShareParkingLot> findAll(){return shareParkingLotRepository.findAll();}
 
     public Page<ShareParkingLot> findByPage(Integer page, Integer pageSize){
@@ -48,5 +51,8 @@ public class ShareParkingLotService {
             throw new CustomException("105","删除失败");
         }
     }
-
+    public List<ShareParkingLot> findListByOrderId(Integer orderId){
+        ParkingOrder orderByOrderId = parkingOrderService.findOrderByOrderId(orderId);
+        return shareParkingLotRepository.findByRegionId(orderByOrderId.getRegionId());
+    }
 }

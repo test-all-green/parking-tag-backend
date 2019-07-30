@@ -1,6 +1,8 @@
 package cn.tag.service;
 
+import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.PublicParkingLot;
+import cn.tag.entity.ShareParkingLot;
 import cn.tag.respository.PublicParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,8 @@ public class PublicParkingLotService {
 
     @Autowired
     private PublicParkingLotRepository publicParkingLotRepository;
+    @Autowired
+    private ParkingOrderService parkingOrderService;
 
     public List<PublicParkingLot> findAll() {
         return publicParkingLotRepository.findAll();
@@ -76,6 +80,10 @@ public class PublicParkingLotService {
         return publicParkingLotRepository.findAll(specification, PageRequest.of(page-1, pageSize));
     }
 
+    public List<PublicParkingLot> findListByOrderId(Integer orderId){
+        ParkingOrder orderByOrderId=parkingOrderService.findOrderByOrderId(orderId);
+        return publicParkingLotRepository.findByRegionId(orderByOrderId.getRegionId());
+    }
     public PublicParkingLot findById(Integer valueOf) {
         return publicParkingLotRepository.findById(valueOf).get();
     }
