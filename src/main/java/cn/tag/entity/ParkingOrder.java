@@ -25,6 +25,7 @@ public class ParkingOrder implements Serializable {
     private Long parkingEndTime;//停车结束时间
     private Integer parkingBoyId;//停车服务人
     private String parkingWaitLocation;//交接点
+    private String parkingLotId;
     private String parkingLocation;//停车地点
     private String scheduledParkingArriveTime;//预计到达时间
     private Long scheduledParkingTime;//预计停车时长

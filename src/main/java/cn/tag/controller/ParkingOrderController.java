@@ -59,13 +59,14 @@ public class ParkingOrderController {
         return ResponseEntity.ok(parkingOrderService.findOrderOfUser(Integer.valueOf(tokenUserId)));
     }
 
-    @EmployeeToken
+
     @PutMapping("/grabOrder")
     public ResponseEntity grabOrder(@RequestBody Map<String, String> request) throws ObjectOptimisticLockingFailureException {
         String parkingLotType = request.get("parkingLotType");
         String parkingLotId = request.get("parkingLotId");
         String orderId = request.get("orderId");
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(Integer.valueOf(orderId));
+        parkingOrder.setParkingLotId(parkingLotId);
         setParkingOrder(parkingOrder, parkingLotId);
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
         Map map = new HashMap();
