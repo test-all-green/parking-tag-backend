@@ -23,7 +23,6 @@ public class PublicParkingLotController {
     @GetMapping
     public ResponseEntity findAll(){
         List<PublicParkingLot> parkingLots = publicParkingLotService.findAll();
-//        return ResponseEntity.ok().body(parkingLots);
         return ResponseEntity.ok(parkingLots);
     }
 

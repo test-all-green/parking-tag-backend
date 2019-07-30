@@ -21,5 +21,8 @@ public class ShareParkingLot {
     private String parkingLotName;
     private Long beginTime;
     private Long endTime;
-    private Integer status;
+    private Boolean releaseStatus;//true 发布,false不发布
+    private String location;
+    private Integer userId;
+    private Integer regionId;
 }

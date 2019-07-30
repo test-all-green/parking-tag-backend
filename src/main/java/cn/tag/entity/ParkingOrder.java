@@ -18,7 +18,7 @@ public class ParkingOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer Id;
-
+    private Integer previousOrderId;
     private String carNum;//车牌
     private Integer carUserId;//车主
     private Long parkingCreateTime;//停车开始时间
@@ -30,7 +30,7 @@ public class ParkingOrder implements Serializable {
     private Long scheduledParkingTime;//预计停车时长
     private Long createTime;//创建时间
     private Long endTime;//结束时间
-    private String status;//状态（无人受理WP、存取中PI、完成F，前往地点GI，待支付WP，取消订单C）
+    private String status;//状态（无人受理PW、存取中PI、完成F，前往地点GI，待支付WP，取消订单C）
     private Double money;//整个订单钱
     private Integer type;//类型：0停车，1取车
     private Integer regionId; //区域ID

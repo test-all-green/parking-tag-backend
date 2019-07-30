@@ -29,7 +29,7 @@ pipeline {
                  input message: 'deploy to Prod?'
              }
         }
-        stage('Deploy Dev') {
+        stage('Deploy Prod') {
             agent {
                 label 'master'
             }

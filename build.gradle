@@ -1,9 +1,19 @@
-plugins {
-    id 'org.springframework.boot' version '2.1.6.RELEASE'
-    id 'java'
-//    id "org.flywaydb.flyway" version "5.2.4"
+buildscript {
+    repositories {
+        mavenCentral()
+        maven{url "https://plugins.gradle.org/m2/"}
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.6.RELEASE"
+    }
 }
 
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+apply plugin:'org.springframework.boot'
+apply plugin:'java'
+apply plugin:'idea'
 apply plugin: 'io.spring.dependency-management'
 
 group 'cn.tag'
