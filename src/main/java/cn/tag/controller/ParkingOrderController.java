@@ -1,6 +1,7 @@
 package cn.tag.controller;
 
 import cn.tag.Interceptor.EmployeeToken;
+import cn.tag.Interceptor.PassToken;
 import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.PublicParkingLot;
@@ -66,6 +67,14 @@ public class ParkingOrderController {
         return ResponseEntity.ok(parkingOrderService.findOrderOfUser(Integer.valueOf(tokenUserId)));
     }
 
+    @PassToken
+    @GetMapping("/historys-employees")
+    public ResponseEntity findByEmployeeId() {
+        String tokenUserId = TokenUtil.getTokenUserId();
+        System.out.println("tokenUserId:"+tokenUserId);
+        return ResponseEntity.ok(parkingOrderService.findByEmployeeIdOrderByCreateTime(Integer.valueOf(tokenUserId)));
+    }
+
 
     @PutMapping("/grabOrder")
     public ResponseEntity grabOrder(@RequestBody Map<String, String> request) throws ObjectOptimisticLockingFailureException {
@@ -82,7 +91,6 @@ public class ParkingOrderController {
         return ResponseEntity.ok(map);
     }
 
-    @EmployeeToken
     @GetMapping(params = {"status"})
     public ResponseEntity getOrdersWithStatus(@RequestParam(name = "status", defaultValue = "PW") String status) {
         return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));

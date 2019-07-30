@@ -115,4 +115,10 @@ public class ParkingOrderService {
         List<ParkingOrder> ordersWithStatus = parkingOrderRepository.getOrdersWithStatus(status);
         return getOrderJsonArray(ordersWithStatus);
     }
+
+    public JSONArray findByEmployeeIdOrderByCreateTime(Integer employeeId) {
+        List<ParkingOrder> ordersWithStatus = parkingOrderRepository.findByEmployeeIdOrderByCreateTime(employeeId);
+        System.out.println("================ordersWithStatus:"+ordersWithStatus.size());
+        return getOrderJsonArray(ordersWithStatus);
+    }
 }
