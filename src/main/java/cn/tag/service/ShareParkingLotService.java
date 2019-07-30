@@ -76,7 +76,7 @@ public class ShareParkingLotService {
             String lStrDate = lsdFormat.format(lDate);
             try {
                 long tempEndTime = df.parse(lStrDate).getTime();
-                if(tempEndTime<=(scheduledParkingTime+tempScheduledParkingTime)){
+                if(tempEndTime>=(scheduledParkingTime+tempScheduledParkingTime)){
                     currentShareParkingLot.add(shareParkingLotList.get(i));
                 }
             } catch (ParseException e) {
