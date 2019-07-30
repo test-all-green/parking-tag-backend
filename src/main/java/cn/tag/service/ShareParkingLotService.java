@@ -55,4 +55,12 @@ public class ShareParkingLotService {
         ParkingOrder orderByOrderId = parkingOrderService.findOrderByOrderId(orderId);
         return shareParkingLotRepository.findByRegionId(orderByOrderId.getRegionId());
     }
+
+    public ShareParkingLot cancelPublish(Integer id) {
+        ShareParkingLot lot = shareParkingLotRepository.findById(id).get();
+        lot.setBeginTime(null);
+        lot.setEndTime(null);
+        lot.setStatus(0); //状态为已发布状态
+        return shareParkingLotRepository.save(lot);
+    }
 }

@@ -31,7 +31,6 @@ public class ShareParkingLotController {
     public ResponseEntity findByOrderId(@RequestParam(name = "orderId") Integer orderId){
         return ResponseEntity.ok(shareParkingLotService.findListByOrderId(orderId));
     }
-
     @GetMapping
     @EmployeeToken
     public ResponseEntity findByUserId(){
@@ -66,6 +65,19 @@ public class ShareParkingLotController {
     @EmployeeToken
     public ResponseEntity publishShareParkingLot(@PathVariable Integer id, @RequestBody ShareParkingLot shareParkingLot){
         ShareParkingLot publish = shareParkingLotService.publish(id, shareParkingLot);
+        return ResponseEntity.ok().body(publish);
+    }
+
+    /**
+     * 取消发布共享车位
+     *
+     * @param id
+     * @return
+     */
+    @PutMapping("/cancel/{id}")
+    @EmployeeToken
+    public ResponseEntity cancelShareParkingLot(@PathVariable Integer id){
+        ShareParkingLot publish = shareParkingLotService.cancelPublish(id);
         return ResponseEntity.ok().body(publish);
     }
 
