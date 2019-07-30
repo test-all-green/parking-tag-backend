@@ -16,4 +16,8 @@ public class RegionService {
     public List<Region> queryRegionList() {
         return regionRepository.findAll();
     }
+
+    public Region findById(Integer id){
+        return regionRepository.findById(id).get();
+    }
 }

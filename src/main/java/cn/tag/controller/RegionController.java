@@ -4,10 +4,7 @@ import cn.tag.service.RegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
@@ -21,6 +18,11 @@ public class RegionController {
     @GetMapping
     public ResponseEntity queryRegionList(){
         return ResponseEntity.ok().body(regionService.queryRegionList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable(name = "id") Integer id){
+        return ResponseEntity.ok().body(regionService.findById(id));
     }
 
 }
