@@ -47,10 +47,10 @@ public class EmployeeControllerTest {
         roleRepository.save(new Role("泊车仔"));
         roleRepository.save(new Role("经理"));
         Role role = roleRepository.findAll().get(0);
-        employeeRepository.save(new Employee("EM532736","张三","635653@qq.com",
-                SHA1.encode("123456"),"13514155874", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(),1));
-        employeeRepository.save(new Employee("EM538774","李四","123456789@qq.com",
-                SHA1.encode("123456"),"13515458746", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(),1));
+        employeeRepository.save(new Employee("EM532736", "张三", "635653@qq.com",
+                SHA1.encode("123456"), "13514155874", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), 1, 0));
+        employeeRepository.save(new Employee("EM538774", "李四", "123456789@qq.com",
+                SHA1.encode("123456"), "13515458746", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), 1, 0));
 
     }
 
@@ -64,8 +64,8 @@ public class EmployeeControllerTest {
     public void should_created_status_when_create_account() throws Exception {
         //given
         Role role = roleRepository.findAll().get(0);
-        Employee employee = new Employee("EM532886","赵武","635654353@qq.com",
-                SHA1.encode("123456"),"13514155875", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(),1);
+        Employee employee = new Employee("EM532886", "赵武", "635654353@qq.com",
+                SHA1.encode("123456"), "13514155875", WorkStatusEnum.IDLE.getKey(), EmployeeStatusEnum.NORMAL.getKey(), 1, 0);
         int currentSize = employeeRepository.findAll().size();
         //when
         ResultActions resultActions = this.mockMvc.perform(post("/employees")
@@ -81,7 +81,7 @@ public class EmployeeControllerTest {
         List<Employee> employeeList = employeeRepository.findAll();
         //when
         ResultActions resultActions = this.mockMvc.perform(get("/employees")
-                .param("page","1").param("pageSize","5"));
+                .param("page", "1").param("pageSize", "5"));
         //then
         resultActions.andExpect(status().isOk());
         JSONObject jsonObject = JSONObject.parseObject(resultActions.andReturn().getResponse().getContentAsString());
@@ -96,12 +96,13 @@ public class EmployeeControllerTest {
         Integer id = roleRepository.findAll().get(0).getId();
         employee.setRoleId(2);
         //when
-        ResultActions resultActions = this.mockMvc.perform(put("/employees/{id}",employee.getId().toString())
+        ResultActions resultActions = this.mockMvc.perform(put("/employees/{id}", employee.getId().toString())
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON_UTF8).content(JSON.toJSONString(employee)));
         //then
         resultActions.andExpect(status().isOk());
         Assertions.assertNotEquals(id, employeeRepository.findById(employee.getId()).get().getId());
     }
+
     @Test
     public void should_return_message_ok_when_register_a_employee() throws Exception {
         //given
@@ -109,7 +110,7 @@ public class EmployeeControllerTest {
         Integer id = roleRepository.findAll().get(0).getId();
         employee.setRoleId(2);
         //when
-        ResultActions resultActions = this.mockMvc.perform(put("/employees/{id}",employee.getId().toString())
+        ResultActions resultActions = this.mockMvc.perform(put("/employees/{id}", employee.getId().toString())
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON_UTF8).content(JSON.toJSONString(employee)));
         //then
         resultActions.andExpect(status().isOk());

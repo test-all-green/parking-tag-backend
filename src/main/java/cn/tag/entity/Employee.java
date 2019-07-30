@@ -24,8 +24,9 @@ public class Employee {
     private Integer status; //账号状态，0正常，1注销
     private Double moneny;
     private Integer roleId;
+    private Integer regionId;
 
-    public Employee(String employeeId, String employeeName, String email, String employeePassword, String phone, String workStatus, Integer status, Integer roleId) {
+    public Employee(String employeeId, String employeeName, String email, String employeePassword, String phone, String workStatus, Integer status, Integer roleId, Integer regionId) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.email = email;
@@ -34,6 +35,6 @@ public class Employee {
         this.workStatus = workStatus;
         this.status = status;
         this.roleId = roleId;
-
+        this.regionId = regionId;
     }
 }

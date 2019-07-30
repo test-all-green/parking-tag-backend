@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,37 +28,40 @@ public class ParkingOrderController {
     private ParkingOrderService parkingOrderService;
     @Autowired
     private PublicParkingLotService parkingLotService;
+
     @GetMapping
-    public ResponseEntity findAll(){
+    public ResponseEntity findAll() {
         return ResponseEntity.ok(parkingOrderService.findAll());
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public ResponseEntity findByPage(@RequestParam(name = "page",defaultValue = "1") Integer page,
-                                     @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize){
-        return ResponseEntity.ok(parkingOrderService.findByPage(page,pageSize));
+    public ResponseEntity findByPage(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        return ResponseEntity.ok(parkingOrderService.findByPage(page, pageSize));
     }
 
     @EmployeeToken
     @PostMapping
-    public ResponseEntity add(@RequestBody ParkingOrder parkingOrder){
+    public ResponseEntity add(@RequestBody ParkingOrder parkingOrder) {
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingOrderService.add(parkingOrder));
     }
+
     @EmployeeToken
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable Integer id,@RequestBody ParkingOrder parkingOrder){
-        return ResponseEntity.ok(parkingOrderService.update(id,parkingOrder));
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody ParkingOrder parkingOrder) {
+        return ResponseEntity.ok(parkingOrderService.update(id, parkingOrder));
     }
 
     @EmployeeToken
     @GetMapping("/history")
-    public ResponseEntity findByUserId(){
+    public ResponseEntity findByUserId() {
         String tokenUserId = TokenUtil.getTokenUserId();
         return ResponseEntity.ok(parkingOrderService.findOrderOfUser(Integer.valueOf(tokenUserId)));
     }
+
     @EmployeeToken
     @PutMapping("/grabOrder")
-    public ResponseEntity grabOrder(@RequestBody Map<String, String> request){
+    public ResponseEntity grabOrder(@RequestBody Map<String, String> request) throws ObjectOptimisticLockingFailureException {
         String parkingLotType = request.get("parkingLotType");
         String parkingLotId = request.get("parkingLotId");
         String orderId = request.get("orderId");
@@ -65,12 +69,12 @@ public class ParkingOrderController {
         setParkingOrder(parkingOrder, parkingLotId);
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
         Map map = new HashMap();
-        map.put("code","200");
-        map.put("message","抢单成功");
+        map.put("code", "200");
+        map.put("message", "抢单成功");
         return ResponseEntity.ok(map);
     }
 
-    private void setParkingOrder(ParkingOrder parkingOrder, String parkingLotId){
+    private void setParkingOrder(ParkingOrder parkingOrder, String parkingLotId) {
         // todo 根据parking lot类型获取parking location
         // 停车场剩余容量减 1
         PublicParkingLot parkingLot = parkingLotService.findById(Integer.valueOf(parkingLotId));
