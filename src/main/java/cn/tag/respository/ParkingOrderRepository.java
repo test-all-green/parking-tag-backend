@@ -17,4 +17,6 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder,Integ
     List<ParkingOrder> findOrdersByCarNumAndSatusNotF(String carNum);
 
     List<ParkingOrder> findByCarUserId(Integer carUserId);
+    @Query(value = "select * from parking_order where status = ?1",nativeQuery = true)
+    List<ParkingOrder> getOrdersWithStatus(String status);
 }

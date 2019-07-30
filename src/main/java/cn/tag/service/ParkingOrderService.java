@@ -1,10 +1,16 @@
 package cn.tag.service;
 
 import cn.tag.entity.ParkingOrder;
+import cn.tag.entity.Region;
+import cn.tag.entity.User;
 import cn.tag.enums.OrderStatusEnum;
 import cn.tag.exception.CustomException;
 import cn.tag.respository.ParkingOrderRepository;
+import cn.tag.respository.RegionRepository;
+import cn.tag.respository.UserRespository;
 import cn.tag.util.TokenUtil;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,34 +28,40 @@ public class ParkingOrderService {
     public static final String ORDER_ERROR = "您的车有未完成订单";
     @Autowired
     private ParkingOrderRepository parkingOrderRepository;
+    @Autowired
+    private RegionRepository regionRepository;
+    @Autowired
+    private UserRespository userRespository;
 
-    public List<ParkingOrder> findAll(){
+    public List<ParkingOrder> findAll() {
         return parkingOrderRepository.findAll();
     }
 
-    public ParkingOrder add(ParkingOrder parkingOrder){
+    public ParkingOrder add(ParkingOrder parkingOrder) {
         String carNum = parkingOrder.getCarNum();
-        if(parkingOrderRepository.findOrdersByCarNumAndSatusNotF(carNum).size()==0) {
+        if (parkingOrderRepository.findOrdersByCarNumAndSatusNotF(carNum).size() == 0) {
             parkingOrder.setCarUserId(Integer.valueOf(TokenUtil.getTokenUserId()));
             parkingOrder.setCreateTime(System.currentTimeMillis());
             parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
             return parkingOrderRepository.save(parkingOrder);
-        }else{
+        } else {
             throw new CustomException(CODE_401, ORDER_ERROR);
         }
     }
-    private String getStringDate(){
+
+    private String getStringDate() {
         Date current = new Date();
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
                 "yyyyMMddHHmmss");
         String time = sdf.format(current);
         return time;
     }
-    public Page<ParkingOrder> findByPage(Integer page,Integer pageSize){
-        return parkingOrderRepository.findAll(PageRequest.of(page-1,pageSize));
+
+    public Page<ParkingOrder> findByPage(Integer page, Integer pageSize) {
+        return parkingOrderRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 
-    public ParkingOrder update(Integer id,ParkingOrder parkingOrder){
+    public ParkingOrder update(Integer id, ParkingOrder parkingOrder) {
         parkingOrder.setId(id);
         return parkingOrderRepository.save(parkingOrder);
     }
@@ -57,11 +69,52 @@ public class ParkingOrderService {
     public List<ParkingOrder> findOrderOfUser(Integer userId) {
         return parkingOrderRepository.findByCarUserIdOrderByCreateTimeDesc(userId);
     }
-    public ParkingOrder findOrderByOrderId(Integer orderId){
+
+    public ParkingOrder findOrderByOrderId(Integer orderId) {
         return parkingOrderRepository.findById(orderId).get();
     }
 
     public List<ParkingOrder> findOrderByCarUserId(Integer carUserId) {
         return parkingOrderRepository.findByCarUserId(carUserId);
+    }
+
+    private JSONArray getOrderJsonArray(List<ParkingOrder> orderList) {
+        JSONArray jsonArray = new JSONArray();
+        orderList.forEach(parkingOrder -> {
+            JSONObject jsonObject = getOrderJsonObject(parkingOrder);
+            jsonArray.add(jsonObject);
+        });
+        return jsonArray;
+
+    }
+
+    private JSONObject getOrderJsonObject(ParkingOrder parkingOrder) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", parkingOrder.getId());
+        jsonObject.put("carNum", parkingOrder.getCarNum());
+        jsonObject.put("carUserId", parkingOrder.getCarUserId());
+        jsonObject.put("parkingCreateTime", parkingOrder.getParkingCreateTime());
+        jsonObject.put("parkingEndTime", parkingOrder.getParkingEndTime());
+        jsonObject.put("parkingBoyId", parkingOrder.getParkingBoyId());
+        jsonObject.put("parkingWaitLocation", parkingOrder.getParkingWaitLocation());
+        jsonObject.put("parkingLocation", parkingOrder.getParkingLocation());
+        jsonObject.put("scheduledParkingArriveTime", parkingOrder.getScheduledParkingArriveTime());
+        jsonObject.put("scheduledParkingTime", parkingOrder.getScheduledParkingTime());
+        jsonObject.put("createTime", parkingOrder.getCreateTime());
+        jsonObject.put("endTime", parkingOrder.getEndTime());
+        jsonObject.put("status", parkingOrder.getStatus());
+        jsonObject.put("money", parkingOrder.getMoney());
+        jsonObject.put("type", parkingOrder.getType());
+        jsonObject.put("regionId", parkingOrder.getRegionId());
+        Region region = regionRepository.findById(parkingOrder.getRegionId()).get();
+        jsonObject.put("regionName", region.getRegionName());
+        User user = userRespository.findById(parkingOrder.getCarUserId()).get();
+        jsonObject.put("phone", user.getPhone());
+        return jsonObject;
+    }
+
+    public JSONArray getOrdersWithStatus(String status) {
+        List<ParkingOrder> ordersWithStatus = parkingOrderRepository.getOrdersWithStatus(status);
+        return getOrderJsonArray(ordersWithStatus);
     }
 }

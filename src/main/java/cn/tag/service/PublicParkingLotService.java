@@ -79,4 +79,8 @@ public class PublicParkingLotService {
     public PublicParkingLot findById(Integer valueOf) {
         return publicParkingLotRepository.findById(valueOf).get();
     }
+
+    public void delete(Integer id) {
+        publicParkingLotRepository.deleteById(id);
+    }
 }

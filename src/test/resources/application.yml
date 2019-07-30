@@ -9,9 +9,9 @@ logging:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-wz99tyk065h7mj4q5bo.mysql.rds.aliyuncs.com/test_all_green_test?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/test_all_green_test?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
-    password: roottest
+    password: root
   jpa:
     hibernate:
       ddl-auto: create

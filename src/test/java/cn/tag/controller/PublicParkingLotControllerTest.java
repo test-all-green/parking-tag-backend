@@ -3,7 +3,9 @@ package cn.tag.controller;
 
 import cn.tag.entity.Employee;
 import cn.tag.entity.PublicParkingLot;
+import cn.tag.entity.Region;
 import cn.tag.respository.PublicParkingLotRepository;
+import cn.tag.respository.RegionRepository;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -20,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,16 +41,22 @@ public class PublicParkingLotControllerTest {
     @Autowired
     private PublicParkingLotRepository publicParkingLotRepository;
 
+    @Autowired
+    private RegionRepository regionRepository;
+
 //    private Employee staff1 = new Employee("staff1", "1234567678", "236417824@qq.com", 1, null, 1, "123456");
 
     private List<PublicParkingLot> parkingLots;
 
     @BeforeEach
     public void setupDb(){
+        regionRepository.save(new Region("香洲区"));
+        regionRepository.save(new Region("番禺区"));
+        Region region = regionRepository.findAll().get(0);
         parkingLots = publicParkingLotRepository.saveAll(Arrays.asList(
-                new PublicParkingLot(null,"停车场1",10,"南方软件",1,1,1),
-                new PublicParkingLot(null,"停车场2",15,"南方软件",1,1,1),
-                new PublicParkingLot(null,"停车场3",10,"南方软件",1,1,1)));
+                new PublicParkingLot(null,"停车场1",10,"南方软件",1,region.getId(),0),
+                new PublicParkingLot(null,"停车场2",15,"南方软件",1,region.getId(),0),
+                new PublicParkingLot(null,"停车场3",10,"南方软件",1,region.getId(),0)));
     }
 //
     @AfterEach
@@ -94,7 +103,7 @@ public class PublicParkingLotControllerTest {
     public void should_update_parking_lot_when_patch() throws Exception {
         PublicParkingLot parkingLot = parkingLots.get(0);
         parkingLot.setStatus(0);
-        MvcResult mvcResult = mockMvc.perform(patch("/public-parking-lots/" + parkingLots.get(0).getId())
+        MvcResult mvcResult = mockMvc.perform(put("/public-parking-lots/" + parkingLots.get(0).getId())
                 .content(JSON.toJSONString(parkingLot)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
@@ -122,5 +131,23 @@ public class PublicParkingLotControllerTest {
                 .andExpect(status().isOk()).andReturn();
         JSONObject resultObject = new JSONObject(mvcResult.getResponse().getContentAsString());
         Assertions.assertEquals(1,resultObject.getJSONArray("content").length());
+    }
+
+    @Test
+    public void should_return_ok_status_when_delete() throws Exception {
+        //given
+        regionRepository.save(new Region("香洲区"));
+        regionRepository.save(new Region("番禺区"));
+        Region region = regionRepository.findAll().get(0);
+        PublicParkingLot publicParkingLot = new PublicParkingLot(null, "停车场1", 10, "南方软件", 1, region.getId(), 0);
+        publicParkingLotRepository.save(publicParkingLot);
+        int size = publicParkingLotRepository.findAll().size();
+        PublicParkingLot currentParkingLot = publicParkingLotRepository.findAll().get(0);
+        //when
+        ResultActions resultActions = this.mockMvc.perform(delete("/public-parking-lots/{id}", currentParkingLot.getId().toString()));
+        //then
+        resultActions.andExpect(status().isOk());
+        Assertions.assertNotEquals(currentParkingLot.getId(),publicParkingLotRepository.findAll().get(0).getId());
+
     }
 }

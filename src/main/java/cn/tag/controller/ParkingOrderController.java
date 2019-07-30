@@ -47,13 +47,13 @@ public class ParkingOrderController {
         return ResponseEntity.ok(parkingOrderService.findOrderByCarUserId(carUserId));
     }
 
-    //    @EmployeeToken
+    @EmployeeToken
     @PostMapping
     public ResponseEntity add(@RequestBody ParkingOrder parkingOrder) {
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingOrderService.add(parkingOrder));
     }
 
-    //    @EmployeeToken
+    @EmployeeToken
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable Integer id, @RequestBody ParkingOrder parkingOrder) {
         return ResponseEntity.ok(parkingOrderService.update(id, parkingOrder));
@@ -79,6 +79,12 @@ public class ParkingOrderController {
         map.put("code", "200");
         map.put("message", "抢单成功");
         return ResponseEntity.ok(map);
+    }
+
+    @EmployeeToken
+    @GetMapping(params = {"status"})
+    public ResponseEntity getOrdersWithStatus(@RequestParam(name = "status", defaultValue = "PW") String status) {
+        return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));
     }
 
     private void setParkingOrder(ParkingOrder parkingOrder, String parkingLotId) {
