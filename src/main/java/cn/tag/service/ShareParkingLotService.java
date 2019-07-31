@@ -125,4 +125,8 @@ public class ShareParkingLotService {
         lot.setStatus(0); //状态为已发布状态
         return shareParkingLotRepository.save(lot);
     }
+
+    public void updateStatus(ShareParkingLot shareParkingLot) {
+        shareParkingLotRepository.saveAndFlush(shareParkingLot);
+    }
 }

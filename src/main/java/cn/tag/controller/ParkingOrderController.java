@@ -6,6 +6,7 @@ import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.PublicParkingLot;
 import cn.tag.entity.ShareParkingLot;
+import cn.tag.entity.ShareParkingLotLocation;
 import cn.tag.enums.OrderStatusEnum;
 import cn.tag.service.ParkingOrderService;
 import cn.tag.service.PublicParkingLotService;
@@ -157,11 +158,15 @@ public class ParkingOrderController {
             parkingLot.setRemain(parkingLot.getRemain() - 1);
             parkingLotService.update(parkingLot.getId(), parkingLot);
             parkingOrder.setParkingLocation(parkingLot.getLocation());
-            parkingOrder.setParkingCreateTime(System.currentTimeMillis());
+            parkingOrder.setType(0);
+        }else if(Integer.valueOf(parkingLotType) == 2){
+            ShareParkingLot shareParkingLot = shareParkingLotService.findById(Integer.valueOf(parkingLotId));
+            shareParkingLot.setStatus(2);
+            parkingOrder.setParkingLocation(shareParkingLot.getLocationName());
+            shareParkingLotService.updateStatus(shareParkingLot);
         }
+        parkingOrder.setParkingCreateTime(System.currentTimeMillis());
         parkingOrder.setStatus(OrderStatusEnum.PARKING_ING.getKey());
-        parkingOrder.setType(0);
-
     }
 
     private void setParkingOrderfinished(ParkingOrder parkingOrder) throws ParseException {
