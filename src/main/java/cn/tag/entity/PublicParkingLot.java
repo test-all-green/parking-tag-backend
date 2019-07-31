@@ -23,7 +23,7 @@ public class PublicParkingLot implements Serializable {
     private Integer parkingLotCapacity;
 
     private String location;
-
+    private Double price = 7.0;//停车场收费标准
     private Integer remain;
     private Integer regionId;
     private Integer status;//是否注销
