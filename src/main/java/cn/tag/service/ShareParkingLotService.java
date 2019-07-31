@@ -3,6 +3,7 @@ package cn.tag.service;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.ShareParkingLot;
 import cn.tag.exception.CustomException;
+import cn.tag.respository.ShareParkingLotLocationRepository;
 import cn.tag.respository.ShareParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ public class ShareParkingLotService {
 
     @Autowired
     private ShareParkingLotRepository shareParkingLotRepository;
+
+    @Autowired
+    private ShareParkingLotLocationRepository shareParkingLotLocationRepository;
 
     @Autowired
     private ParkingOrderService parkingOrderService;
@@ -45,6 +49,7 @@ public class ShareParkingLotService {
                 throw new RuntimeException("输入的共享停车位名称已存在!");
             }
         }
+        shareParkingLot.setLocationName(shareParkingLotLocationRepository.findById(shareParkingLot.getLocationId()).get().getName());
         shareParkingLot.setStatus(0); //未发布状态
         return shareParkingLotRepository.save(shareParkingLot);
     }

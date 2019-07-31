@@ -27,6 +27,7 @@ public class ShareParkingLot {
     private Integer regionId;
 //    private String location; //地址
     private Integer locationId; //关联ShareParkingLotLocation表
+    private String locationName;
     private Double price = 5.0; //共享车位价格
 
 }
