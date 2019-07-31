@@ -70,8 +70,9 @@ public class ParkingOrderService {
         return parkingOrderRepository.save(parkingOrder);
     }
 
-    public List<ParkingOrder> findOrderOfUser(Integer userId) {
-        return parkingOrderRepository.findByCarUserIdOrderByCreateTimeDesc(userId);
+    public JSONArray findOrderOfUser(Integer userId) {
+        List<ParkingOrder> ordersWithStatus = parkingOrderRepository.findByCarUserIdOrderByCreateTimeDesc(userId);
+        return getOrderJsonArray(ordersWithStatus);
     }
 
     public ParkingOrder findOrderByOrderId(Integer orderId) {
@@ -113,10 +114,15 @@ public class ParkingOrderService {
         jsonObject.put("regionId", parkingOrder.getRegionId());
         Region region = regionRepository.findById(parkingOrder.getRegionId()).get();
         jsonObject.put("regionName", region.getRegionName());
-        User user = userRepository.findById(parkingOrder.getCarUserId()).get();
-        Employee employee =employeeRepository.findById(parkingOrder.getParkingBoyId()).get();
-        jsonObject.put("parkingBoyName", employee.getEmployeeName());
-        jsonObject.put("phone", user.getPhone());
+        if(parkingOrder.getCarUserId()!=null){
+            User user = userRepository.findById(parkingOrder.getCarUserId()).get();
+            jsonObject.put("phoneUser", user.getPhone());
+        }
+        if(parkingOrder.getParkingBoyId()!=null){
+            Employee employee =employeeRepository.findById(parkingOrder.getParkingBoyId()).get();
+            jsonObject.put("parkingBoyName", employee.getEmployeeName());
+            jsonObject.put("phoneEmployee",employee.getPhone());
+        }
         return jsonObject;
     }
 
@@ -156,7 +162,7 @@ public class ParkingOrderService {
         jsonObject = getOrderJsonObject(parkingOrder);
         map.put("parkOrder",jsonObject);
         if(type==0){
-            map.put("fetchOrder",null);
+            map.put("fetchOrder",new JSONObject());
         }else if(type == 1){
             ParkingOrder parkingOrder1 = parkingOrderRepository.findOrderByPreOrderId(parkingOrder.getPreviousOrderId());
             jsonObject = getOrderJsonObject(parkingOrder1);
