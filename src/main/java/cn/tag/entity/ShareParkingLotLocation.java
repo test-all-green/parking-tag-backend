@@ -8,25 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShareParkingLot {
+public class ShareParkingLotLocation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String parkingLotName;
-    private Long beginTime;
-    private Long endTime;
-    private Integer status; //0: 未发布，1: 已发布，2: 使用中
 
-    private Integer userId;
+    //区域
     private Integer regionId;
-//    private String location; //地址
-    private Integer locationId; //关联ShareParkingLotLocation表
-    private Double price = 5.0; //共享车位价格
 
+    //支持发布共享车位的小区名称
+    private String name;
 }
