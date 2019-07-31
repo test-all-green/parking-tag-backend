@@ -19,6 +19,8 @@ pipeline {
             }
             steps {
                 sh '''
+                    sed -i "s/TAG_PW/${DB_PW}/g" src/main/resources/application-test.yml
+                    cat src/main/resources/application-test.yml
                     chmod +x gradlew
                     ./gradlew build -x test
                 '''
@@ -35,6 +37,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    ssh -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa root@39.98.243.100 "rm -f /opt/parking-tag-backend/parking-tag-1.0-SNAPSHOT.jar"
                     scp -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa /var/lib/jenkins/workspace/prod-parking-tag-backend/build/libs/parking-tag-1.0-SNAPSHOT.jar root@39.98.243.100:/opt/parking-tag-backend/ 
                     ssh -o StrictHostKeyChecking=no -i ~/.ssh/ooclserver_rsa root@39.98.243.100 < deploy.sh
                 '''
