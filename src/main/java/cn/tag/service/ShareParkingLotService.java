@@ -58,6 +58,20 @@ public class ShareParkingLotService {
         ShareParkingLot lot = shareParkingLotRepository.findById(id).get();
         lot.setBeginTime(shareParkingLot.getBeginTime());
         lot.setEndTime(shareParkingLot.getEndTime());
+        if(shareParkingLot.getParkingLotName() != null){
+            lot.setLocationName(shareParkingLot.getLocationName());
+        }
+        if(shareParkingLot.getLocationId() != null){
+            lot.setLocationId(shareParkingLot.getLocationId());
+            lot.setLocationName(shareParkingLot.getLocationName());
+        }
+        if(shareParkingLot.getPrice() != null){
+            lot.setPrice(shareParkingLot.getPrice());
+        }
+        if(shareParkingLot.getRegionId() != null){
+            lot.setRegionId(shareParkingLot.getRegionId());
+        }
+
         lot.setStatus(1); //状态为已发布状态
         return shareParkingLotRepository.save(lot);
     }
@@ -102,6 +116,10 @@ public class ShareParkingLotService {
     }
     public ShareParkingLot cancelPublish(Integer id) {
         ShareParkingLot lot = shareParkingLotRepository.findById(id).get();
+        if(lot.getStatus() == 2){
+            // 使用中
+            throw new RuntimeException("该车位已被使用，无法取消");
+        }
         lot.setBeginTime(null);
         lot.setEndTime(null);
         lot.setStatus(0); //状态为已发布状态
