@@ -114,6 +114,8 @@ public class ParkingOrderService {
         Region region = regionRepository.findById(parkingOrder.getRegionId()).get();
         jsonObject.put("regionName", region.getRegionName());
         User user = userRepository.findById(parkingOrder.getCarUserId()).get();
+        Employee employee =employeeRepository.findById(parkingOrder.getParkingBoyId()).get();
+        jsonObject.put("parkingBoyName", employee.getEmployeeName());
         jsonObject.put("phone", user.getPhone());
         return jsonObject;
     }
