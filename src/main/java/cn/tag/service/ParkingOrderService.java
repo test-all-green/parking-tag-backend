@@ -58,6 +58,7 @@ public class ParkingOrderService {
     public Page<ParkingOrder> findByPage(Integer page, Integer pageSize) {
         return parkingOrderRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
+
     @Transactional
     public ParkingOrder update(Integer id, ParkingOrder parkingOrder) {
         parkingOrder.setId(id);
@@ -119,7 +120,17 @@ public class ParkingOrderService {
 
     public JSONArray findByEmployeeIdOrderByCreateTime(Integer employeeId) {
         List<ParkingOrder> ordersWithStatus = parkingOrderRepository.findByEmployeeIdOrderByCreateTime(employeeId);
-        System.out.println("================ordersWithStatus:"+ordersWithStatus.size());
         return getOrderJsonArray(ordersWithStatus);
+    }
+
+    public JSONObject getOrderWithStyleIsZeroAndStatusIsF(Integer userId) {
+        JSONObject jsonObject = new JSONObject();
+        ParkingOrder parkingOrder = parkingOrderRepository.getOrderWithStyleIsZeroAndStatusIsF(userId);
+        if (parkingOrder != null) {
+            jsonObject = getOrderJsonObject(parkingOrder);
+        } else {
+            jsonObject.put("massage", "您未停车！！");
+        }
+        return jsonObject;
     }
 }
