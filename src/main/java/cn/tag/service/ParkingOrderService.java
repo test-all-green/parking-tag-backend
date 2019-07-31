@@ -114,9 +114,11 @@ public class ParkingOrderService {
             if(parkingOrder.getParkingLotType()==1){
                 PublicParkingLot publicParkingLot = publicParkingLotRepository.findById(parkingOrder.getParkingLotId()).get();
                 jsonObject.put("parkingLotName",publicParkingLot.getParkingLotName());
+                jsonObject.put("parkingLotId",parkingOrder.getParkingLotId());
             }else if(parkingOrder.getParkingLotType()==2){
                 ShareParkingLot shareParkingLot = shareParkingLotRepository.findById(parkingOrder.getParkingLotId()).get();
                 jsonObject.put("parkingLotName",shareParkingLot.getParkingLotName());
+                jsonObject.put("parkingLotId",parkingOrder.getParkingLotId());
             }
         }
         Region region = regionRepository.findById(parkingOrder.getRegionId()).get();
