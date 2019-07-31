@@ -44,6 +44,12 @@ public class ParkingOrderService {
             parkingOrder.setCarUserId(Integer.valueOf(TokenUtil.getTokenUserId()));
             parkingOrder.setCreateTime(System.currentTimeMillis());
             parkingOrder.setStatus(OrderStatusEnum.PARKING_WAIT.getKey());
+            if(parkingOrder.getType()!=null&&parkingOrder.getType()==1){
+                ParkingOrder parkingOrder1 = parkingOrderRepository.findById(parkingOrder.getPreviousOrderId()).get();
+                parkingOrder1.setStatus(OrderStatusEnum.FINISH.getKey());
+                parkingOrder.setCreateTime(parkingOrder1.getCreateTime());
+                parkingOrderRepository.saveAndFlush(parkingOrder1);
+            }
             return parkingOrderRepository.save(parkingOrder);
         } else {
             throw new CustomException(CODE_401, ORDER_ERROR);
