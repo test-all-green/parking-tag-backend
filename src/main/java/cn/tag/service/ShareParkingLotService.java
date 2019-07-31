@@ -34,7 +34,12 @@ public class ShareParkingLotService {
         return shareParkingLotRepository.findByUserId(userId);
     }
 
-    public ShareParkingLot add(ShareParkingLot shareParkingLot) {
+    public ShareParkingLot add(ShareParkingLot shareParkingLot, Integer userId) {
+
+        List<ShareParkingLot> byUserId = shareParkingLotRepository.findByUserId(userId);
+        if(byUserId.size() >= 10){
+            throw new RuntimeException("发布的的共享车位信息不能超过10条！");
+        }
         shareParkingLot.setStatus(0); //未发布状态
         return shareParkingLotRepository.save(shareParkingLot);
     }

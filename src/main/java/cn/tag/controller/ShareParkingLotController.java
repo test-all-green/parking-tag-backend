@@ -53,7 +53,7 @@ public class ShareParkingLotController {
     public ResponseEntity add(@RequestBody ShareParkingLot shareParkingLot){
         Integer tokenUserId = Integer.valueOf(TokenUtil.getTokenUserId());
         shareParkingLot.setUserId(tokenUserId);
-        ShareParkingLot shareParkingLotAdd = shareParkingLotService.add(shareParkingLot);
+        ShareParkingLot shareParkingLotAdd = shareParkingLotService.add(shareParkingLot, tokenUserId);
         return ResponseEntity.status(HttpStatus.CREATED).body(shareParkingLotAdd);
     }
 
