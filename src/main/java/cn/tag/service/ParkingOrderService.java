@@ -1,15 +1,9 @@
 package cn.tag.service;
 
-import cn.tag.entity.Employee;
-import cn.tag.entity.ParkingOrder;
-import cn.tag.entity.Region;
-import cn.tag.entity.User;
+import cn.tag.entity.*;
 import cn.tag.enums.OrderStatusEnum;
 import cn.tag.exception.CustomException;
-import cn.tag.respository.EmployeeRepository;
-import cn.tag.respository.ParkingOrderRepository;
-import cn.tag.respository.RegionRepository;
-import cn.tag.respository.UserRepository;
+import cn.tag.respository.*;
 import cn.tag.util.TokenUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -36,6 +30,10 @@ public class ParkingOrderService {
     private UserRepository userRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private PublicParkingLotRepository publicParkingLotRepository;
+    @Autowired
+    private ShareParkingLotRepository shareParkingLotRepository;
     public List<ParkingOrder> findAll() {
         return parkingOrderRepository.findAll();
     }
@@ -112,6 +110,15 @@ public class ParkingOrderService {
         jsonObject.put("money", parkingOrder.getMoney());
         jsonObject.put("type", parkingOrder.getType());
         jsonObject.put("regionId", parkingOrder.getRegionId());
+        if(parkingOrder.getParkingLotId()!=null && parkingOrder.getParkingLotType()!=null){
+            if(parkingOrder.getParkingLotType()==1){
+                PublicParkingLot publicParkingLot = publicParkingLotRepository.findById(parkingOrder.getParkingLotId()).get();
+                jsonObject.put("parkingLotName",publicParkingLot.getParkingLotName());
+            }else if(parkingOrder.getParkingLotType()==2){
+                ShareParkingLot shareParkingLot = shareParkingLotRepository.findById(parkingOrder.getParkingLotId()).get();
+                jsonObject.put("parkingLotName",shareParkingLot.getParkingLotName());
+            }
+        }
         Region region = regionRepository.findById(parkingOrder.getRegionId()).get();
         jsonObject.put("regionName", region.getRegionName());
         if(parkingOrder.getCarUserId()!=null){
