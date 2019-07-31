@@ -18,7 +18,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    sed -i "s/TAG_PW/${DB_PW}/g" src/main/resources/application-test.yml
+                    sed -i "s/TAG_PW/${DB_PW}/g" src/main/resources/application.yml
                     cat src/main/resources/application-test.yml
                     chmod +x gradlew
                     ./gradlew build -x test
