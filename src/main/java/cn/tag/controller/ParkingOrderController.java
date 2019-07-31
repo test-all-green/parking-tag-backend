@@ -18,6 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,14 +37,17 @@ public class ParkingOrderController {
     private PublicParkingLotService parkingLotService;
     @Autowired
     private ShareParkingLotService shareParkingLotService;
+
     @GetMapping
     public ResponseEntity findAll() {
         return ResponseEntity.ok(parkingOrderService.findAll());
     }
+
     @GetMapping("/locations")
     public ResponseEntity findByUserLocation() {
         return ResponseEntity.ok(parkingOrderService.findByUserLocation());
     }
+
     @GetMapping(params = {"page", "pageSize"})
     public ResponseEntity findByPage(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -80,8 +87,9 @@ public class ParkingOrderController {
         System.out.println("tokenUserId:" + tokenUserId);
         return ResponseEntity.ok(parkingOrderService.findByEmployeeIdOrderByCreateTime(Integer.valueOf(tokenUserId)));
     }
+
     @PutMapping("/saveParkBoyId/{orderId}")
-    public ResponseEntity saveParkBoyId(@PathVariable Integer orderId){
+    public ResponseEntity saveParkBoyId(@PathVariable Integer orderId) {
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(orderId);
         String tokenUserId = TokenUtil.getTokenUserId();
         parkingOrder.setParkingBoyId(Integer.valueOf(tokenUserId));
@@ -114,7 +122,7 @@ public class ParkingOrderController {
 
     @PassToken
     @PutMapping("/finishedOrder/{orderId}")
-    public ResponseEntity finishdeOrder(@PathVariable Integer orderId) throws ObjectOptimisticLockingFailureException {
+    public ResponseEntity finishdeOrder(@PathVariable Integer orderId) throws ObjectOptimisticLockingFailureException, ParseException {
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(Integer.valueOf(orderId));
         Map map = new HashMap();
         setParkingOrderfinished(parkingOrder);
@@ -150,7 +158,7 @@ public class ParkingOrderController {
 
     }
 
-    private void setParkingOrderfinished(ParkingOrder parkingOrder) {
+    private void setParkingOrderfinished(ParkingOrder parkingOrder) throws ParseException {
         // todo 根据parking lot类型获取parking location
         // 停车场剩余容量加 1
         if (parkingOrder.getParkingLotType() == 1) {
@@ -161,14 +169,38 @@ public class ParkingOrderController {
             ShareParkingLot shareParkingLot = shareParkingLotService.findById(parkingOrder.getParkingLotId());
             shareParkingLot.setStatus(1);
         }
-        if( parkingOrder.getType()==0) {
-           parkingOrder.setStatus(OrderStatusEnum.FETCH_WAIT.getKey());
-        }else{
+        if (parkingOrder.getType() == 0) {
+            parkingOrder.setStatus(OrderStatusEnum.FETCH_WAIT.getKey());
+        } else {
             parkingOrder.setStatus(OrderStatusEnum.FINISH.getKey());
+            setParkTime(parkingOrder);
         }
         parkingOrder.setEndTime(System.currentTimeMillis());
-        System.out.println("时间："+(parkingOrder.getEndTime().longValue()-parkingOrder.getParkingCreateTime().longValue()));
-        //parkingOrder.setMoney();
+
     }
-    //private double countParkMoney(parkingOrder)
+
+    private long setParkTime(ParkingOrder parkingOrder) throws ParseException {
+        long parkTime;
+        double price = 0.0;
+        if (parkingOrder.getParkingLotType() == 1) {
+            price = parkingLotService.findById(parkingOrder.getParkingLotId()).getPrice();
+        } else {
+            price = shareParkingLotService.findById(parkingOrder.getParkingLotId()).getPrice();
+        }
+        Date time1 = getTimeStr(parkingOrder.getEndTime());
+        Date time2 = getTimeStr(parkingOrder.getParkingCreateTime());
+        long diff = time1.getTime() - time2.getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000) % 24 + 1;
+        parkTime = diffDays * 24 + diffHours;
+        //System.out.println("parkTime"+parkTime);
+        parkingOrder.setMoney(parkTime * price);
+        return parkTime;
+    }
+
+    private Date getTimeStr(long timeLong) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.parse(sdf.format(new Date(Long.parseLong(String.valueOf(timeLong)))));
+    }
+//    private double countParkMoney(parkingOrder)
 }
