@@ -82,30 +82,55 @@ public class ParkingOrderController {
         String parkingLotId = request.get("parkingLotId");
         String orderId = request.get("orderId");
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(Integer.valueOf(orderId));
-        parkingOrder.setParkingLotId(parkingLotId);
-        setParkingOrder(parkingOrder, parkingLotId);
+        parkingOrder.setParkingLotId(Integer.valueOf(parkingLotId));
+        setParkingOrder(parkingOrder, parkingLotId,parkingLotType);
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
         Map map = new HashMap();
         map.put("code", "200");
         map.put("message", "抢单成功");
         return ResponseEntity.ok(map);
     }
-
+    @PassToken
+    @PutMapping("/finishedOrder/{orderId}")
+    public ResponseEntity finishdeOrder(@PathVariable Integer orderId) throws ObjectOptimisticLockingFailureException {
+        ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(Integer.valueOf(orderId));
+        //parkingOrder.setParkingLotId(parkingLotId);
+        setParkingOrderfinished(parkingOrder);
+        parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
+        Map map = new HashMap();
+        map.put("code", "200");
+        map.put("message", "下单完成");
+        return ResponseEntity.ok(map);
+    }
     @GetMapping(params = {"status"})
     public ResponseEntity getOrdersWithStatus(@RequestParam(name = "status", defaultValue = "PW") String status) {
         return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));
     }
 
-    private void setParkingOrder(ParkingOrder parkingOrder, String parkingLotId) {
+    private void setParkingOrder(ParkingOrder parkingOrder, String parkingLotId,String parkingLotType) {
         // todo 根据parking lot类型获取parking location
         // 停车场剩余容量减 1
-        PublicParkingLot parkingLot = parkingLotService.findById(Integer.valueOf(parkingLotId));
-        parkingLot.setRemain(parkingLot.getRemain() - 1);
-        parkingLotService.update(parkingLot.getId(), parkingLot);
-
+        if(Integer.valueOf(parkingLotType)==1) {
+            PublicParkingLot parkingLot = parkingLotService.findById(Integer.valueOf(parkingLotId));
+            parkingLot.setRemain(parkingLot.getRemain() - 1);
+            parkingLotService.update(parkingLot.getId(), parkingLot);
+            parkingOrder.setParkingLocation(parkingLot.getLocation());
+        }
         parkingOrder.setStatus(OrderStatusEnum.PARKING_ING.getKey());
-        parkingOrder.setParkingLocation(parkingLot.getLocation());
         String tokenUserId = TokenUtil.getTokenUserId();
         parkingOrder.setParkingBoyId(Integer.valueOf(tokenUserId));
+    }
+    private void setParkingOrderfinished(ParkingOrder parkingOrder) {
+        // todo 根据parking lot类型获取parking location
+        // 停车场剩余容量加 1
+        if(parkingOrder.getParkingLotType()==1) {
+            PublicParkingLot parkingLot = parkingLotService.findById(parkingOrder.getParkingLotId());
+            parkingLot.setRemain(parkingLot.getRemain() - 1);
+            parkingLotService.update(parkingLot.getId(), parkingLot);
+        }else{
+
+        }
+        parkingOrder.setStatus(OrderStatusEnum.FINISH.getKey());
+        parkingOrder.setEndTime(System.currentTimeMillis());
     }
 }

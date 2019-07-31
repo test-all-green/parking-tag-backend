@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class ParkingOrderService {
     public Page<ParkingOrder> findByPage(Integer page, Integer pageSize) {
         return parkingOrderRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
-
+    @Transactional
     public ParkingOrder update(Integer id, ParkingOrder parkingOrder) {
         parkingOrder.setId(id);
         return parkingOrderRepository.save(parkingOrder);
