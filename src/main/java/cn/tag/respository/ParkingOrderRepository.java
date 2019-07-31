@@ -13,7 +13,7 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder, Inte
 
     List<ParkingOrder> findByCarUserIdOrderByCreateTimeDesc(Integer userId);
 
-    @Query(value = "select * from parking_order where car_num = ?1 and status != 'F'", nativeQuery = true)
+    @Query(value = "select * from parking_order where car_num = ?1 and status != 'WP'", nativeQuery = true)
     List<ParkingOrder> findOrdersByCarNumAndStatusNotF(String carNum);
 
     List<ParkingOrder> findByCarUserId(Integer carUserId);
@@ -24,6 +24,9 @@ public interface ParkingOrderRepository extends JpaRepository<ParkingOrder, Inte
     @Query(value = "select * from parking_order where parking_boy_id = ?1 order by create_time", nativeQuery = true)
     List<ParkingOrder> findByEmployeeIdOrderByCreateTime(Integer employeeId);
 
-    @Query(value = "select * from parking_order where car_user_id =?1 and type =0 and status ='F' order by end_time desc limit 1", nativeQuery = true)
+    @Query(value = "select * from parking_order where car_user_id =?1 and type =0 and status ='FW' order by end_time desc limit 1", nativeQuery = true)
     ParkingOrder getOrderWithStyleIsZeroAndStatusIsF(Integer orderId);
+
+    @Query(value = "select * from parking_order where region_id = ?1 and status ='WP'", nativeQuery = true)
+    List<ParkingOrder> findByUserLocation(Integer employeeId);
 }

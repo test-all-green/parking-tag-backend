@@ -1,10 +1,12 @@
 package cn.tag.service;
 
+import cn.tag.entity.Employee;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.Region;
 import cn.tag.entity.User;
 import cn.tag.enums.OrderStatusEnum;
 import cn.tag.exception.CustomException;
+import cn.tag.respository.EmployeeRepository;
 import cn.tag.respository.ParkingOrderRepository;
 import cn.tag.respository.RegionRepository;
 import cn.tag.respository.UserRepository;
@@ -30,7 +32,8 @@ public class ParkingOrderService {
     private RegionRepository regionRepository;
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private EmployeeRepository employeeRepository;
     public List<ParkingOrder> findAll() {
         return parkingOrderRepository.findAll();
     }
@@ -132,5 +135,13 @@ public class ParkingOrderService {
             jsonObject.put("massage", "您未停车！！");
         }
         return jsonObject;
+    }
+
+    public JSONArray findByUserLocation() {
+        String employeeId = TokenUtil.getTokenUserId();
+        JSONObject jsonObject = new JSONObject();
+        Employee employee = employeeRepository.findById(Integer.valueOf(employeeId)).get();
+        List<ParkingOrder> ordersWithStatus = parkingOrderRepository.findByUserLocation(employee.getRegionId());
+        return getOrderJsonArray(ordersWithStatus);
     }
 }

@@ -5,7 +5,7 @@ public enum OrderStatusEnum {
     PARKING_WAIT("PW", "无人受理"),
     PARKING_ING("PI", "存取中"),
     //    HAVE_PARKING("HP","已停车"),
-//    FETCH_WAIT("FW","等待取车受理"),
+    FETCH_WAIT("FW","等待取车受理"),
 //    FETCH_ING("FI","取车中"),
     GO_ING("GI", "前往地点"),
     PAY_WAIT("WP", "待支付"),

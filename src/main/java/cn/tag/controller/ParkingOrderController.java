@@ -34,7 +34,10 @@ public class ParkingOrderController {
     public ResponseEntity findAll() {
         return ResponseEntity.ok(parkingOrderService.findAll());
     }
-
+    @GetMapping("/locations")
+    public ResponseEntity findByUserLocation() {
+        return ResponseEntity.ok(parkingOrderService.findByUserLocation());
+    }
     @GetMapping(params = {"page", "pageSize"})
     public ResponseEntity findByPage(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -84,7 +87,7 @@ public class ParkingOrderController {
         String orderId = request.get("orderId");
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(Integer.valueOf(orderId));
         if (parkingOrder.getStatus() != OrderStatusEnum.PARKING_WAIT.toString()) {
-            map.put("message", "订单属于已被抢");
+            map.put("message", "订单已被抢");
         }
         parkingOrder.setParkingLotId(Integer.valueOf(parkingLotId));
         setParkingOrder(parkingOrder, parkingLotId, parkingLotType);
@@ -100,14 +103,10 @@ public class ParkingOrderController {
     public ResponseEntity finishdeOrder(@PathVariable Integer orderId) throws ObjectOptimisticLockingFailureException {
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(Integer.valueOf(orderId));
         Map map = new HashMap();
-        if (parkingOrder.getStatus() != OrderStatusEnum.FINISH.toString()) {
-            map.put("message", "订单已完成，请勿重复处理");
-        }
         setParkingOrderfinished(parkingOrder);
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
-
         map.put("code", "200");
-        map.put("message", "下单完成");
+        map.put("message", "停车完成");
         return ResponseEntity.ok(map);
     }
 
@@ -147,7 +146,7 @@ public class ParkingOrderController {
         } else {
 
         }
-        parkingOrder.setStatus(OrderStatusEnum.FINISH.getKey());
+        parkingOrder.setStatus(OrderStatusEnum.FETCH_WAIT.getKey());
         parkingOrder.setEndTime(System.currentTimeMillis());
     }
 }
