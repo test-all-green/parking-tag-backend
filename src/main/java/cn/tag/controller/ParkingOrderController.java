@@ -124,7 +124,7 @@ public class ParkingOrderController {
 
     @PassToken
     @PutMapping("/finishedOrder/{orderId}")
-    public ResponseEntity finishdeOrder(@PathVariable Integer orderId) throws ObjectOptimisticLockingFailureException, ParseException {
+    public ResponseEntity finishedOrder(@PathVariable Integer orderId) throws ObjectOptimisticLockingFailureException, ParseException {
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(Integer.valueOf(orderId));
         Map map = new HashMap();
         setParkingOrderfinished(parkingOrder);
@@ -138,11 +138,11 @@ public class ParkingOrderController {
     public ResponseEntity getOrdersWithStatus(@RequestParam(name = "status", defaultValue = "PW") String status) {
         return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));
     }
-//    @GetMapping("/{orderId}")
-//    public ResponseEntity getOrder(@PathVariable Integer orderId, @RequestParam Integer type) {
-//
-////        return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));
-//    }
+    @GetMapping("/{orderId}/types")
+    public ResponseEntity getOrder(@PathVariable Integer orderId, @RequestParam Integer type) {
+        System.out.println("=====================已进来");
+        return ResponseEntity.ok(parkingOrderService.getOrdersByOrderIdAndType(orderId, type));
+    }
     @GetMapping("/getFinishedOrder")
     public ResponseEntity getOrderBySytleIsZeroAndStatusIsF() {
         Integer orderId = Integer.valueOf(TokenUtil.getTokenUserId());

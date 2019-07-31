@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ParkingOrderService {
@@ -143,5 +145,21 @@ public class ParkingOrderService {
         Employee employee = employeeRepository.findById(Integer.valueOf(employeeId)).get();
         List<ParkingOrder> ordersWithStatus = parkingOrderRepository.findByUserLocation(employee.getRegionId());
         return getOrderJsonArray(ordersWithStatus);
+    }
+
+    public Map getOrdersByOrderIdAndType(Integer orderId, Integer type) {
+        Map map = new HashMap();
+        ParkingOrder parkingOrder = parkingOrderRepository.findById(orderId).get();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject = getOrderJsonObject(parkingOrder);
+        map.put("parkOrder",jsonObject);
+        if(type==0){
+            map.put("fetchOrder",null);
+        }else if(type == 1){
+            ParkingOrder parkingOrder1 = parkingOrderRepository.findOrderByPreOrderId(parkingOrder.getPreviousOrderId());
+            jsonObject = getOrderJsonObject(parkingOrder1);
+            map.put("fetchOrder",jsonObject);
+        }
+        return map;
     }
 }
