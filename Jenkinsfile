@@ -26,11 +26,6 @@ pipeline {
                 '''
             }
         }
-        stage('Approve of Deploy Prod') {
-             steps {
-                 input message: 'deploy to Prod?'
-             }
-        }
         stage('Deploy Prod') {
             agent {
                 label 'master'
