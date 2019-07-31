@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ParkingOrderRepository extends JpaRepository<ParkingOrder, Integer> {
 
-    List<ParkingOrder> findByCarUserIdOrderByCreateTimeDesc(Integer userId);
+    List<ParkingOrder> findByCarUserIdOrderByCreateTimeAsc(Integer userId);
 
     @Query(value = "select * from parking_order where car_num = ?1 and status != 'FW' and status !='F'", nativeQuery = true)
     List<ParkingOrder> findOrdersByCarNumAndStatusNotF(String carNum);
