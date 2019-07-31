@@ -40,6 +40,11 @@ public class ShareParkingLotService {
         if(byUserId.size() >= 10){
             throw new RuntimeException("发布的的共享车位信息不能超过10条！");
         }
+        for(ShareParkingLot sp : byUserId){
+            if(sp.getParkingLotName().equals(shareParkingLot.getParkingLotName())){
+                throw new RuntimeException("输入的共享停车位名称已存在!");
+            }
+        }
         shareParkingLot.setStatus(0); //未发布状态
         return shareParkingLotRepository.save(shareParkingLot);
     }
