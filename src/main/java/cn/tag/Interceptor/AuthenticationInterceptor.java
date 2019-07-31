@@ -34,7 +34,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
-        System.out.println("=====preHandle");
+        //System.out.println("=====preHandle");
         String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
         // 如果不是映射到方法直接通过
         if (!(object instanceof HandlerMethod)) {
@@ -51,61 +51,56 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         //检查有没有需要用户权限的注解
         try {
-            System.out.println(JWT.decode(token).getAudience().size());
-            if(JWT.decode(token).getAudience().size()>1) {
-                if (method.isAnnotationPresent(EmployeeToken.class)) {
-                    System.out.println("======开始EmployeeToken");
-                    EmployeeToken employeeToken = method.getAnnotation(EmployeeToken.class);
-                    if (employeeToken.required()) {
-                        // 执行认证
-                        if (token == null) {
-                            throw new CustomException(CODE_100, NULL_TOKEN);
-                        }
-                        // 获取 token 中的 user id
-                        int userId;
-                        userId = Integer.parseInt(JWT.decode(token).getAudience().get(0));
-                        User user = userService1.findUserById(userId);
-                        if (user == null) {
-                            throw new CustomException(CODE_100, USER_NOT_EXIT);
-                        }
-                        // 验证 token
-                        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getUserPassword())).build();
-                        jwtVerifier.verify(token);
-                        return true;
+            if(method.isAnnotationPresent(EmployeeToken.class)){
+                EmployeeToken employeeToken = method.getAnnotation(EmployeeToken.class);
+                if (employeeToken.required()) {
+                    // 执行认证
+                    if (token == null) {
+                        throw new CustomException(CODE_100, NULL_TOKEN);
                     }
+                    // 获取 token 中的 user id
+                    int userId;
+                    userId = Integer.parseInt(JWT.decode(token).getAudience().get(0));
+                    User user = userService1.findUserById(userId);
+                    if (user == null) {
+                        throw new CustomException(CODE_100, USER_NOT_EXIT);
+                    }
+                    // 验证 token
+                    JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getUserPassword())).build();
+                    jwtVerifier.verify(token);
+                    return true;
                 }
-            }else if(JWT.decode(token).getAudience().size()==1) {
-                if (method.isAnnotationPresent(UserLoginToken.class)) {
-                    System.out.println("================开始UserLoginToken");
-                    UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
-                    if (userLoginToken.required()) {
-                        // 执行认证
-                        if (token == null) {
-                            throw new CustomException(CODE_100, NULL_TOKEN);
-                        }
-                        // 获取 token 中的 user id
-                        int userId;
-                        userId = Integer.parseInt(JWT.decode(token).getAudience().get(0));
-                        Employee user = userService.findUserById(userId);
-                        if (user == null) {
-                            throw new CustomException(CODE_100, USER_NOT_EXIT);
-                        }
-                        // 验证 token
-                        String role = "";
-                        if (JWT.decode(token).getAudience().size() > 1) {
-                            role = JWT.decode(token).getAudience().get(1);
-                            AuthToken authToken = method.getAnnotation(AuthToken.class);
-                            System.out.println("role:" + role + ",role_name:" + authToken.role_name());
-                            if (!role.equals(authToken.role_name())) {
-                                throw new CustomException(CODE_101, MESSAGE_NOT_PROMISION);
-                            }
-                        }
-                        //if()
-
-                        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getEmployeePassword())).build();
-                        jwtVerifier.verify(token);
-                        return true;
+            }
+            else if (method.isAnnotationPresent(UserLoginToken.class)) {
+                System.out.println("================开始UserLoginToken");
+                UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
+                if (userLoginToken.required()) {
+                    // 执行认证
+                    if (token == null) {
+                        throw new CustomException(CODE_100, NULL_TOKEN);
                     }
+                    // 获取 token 中的 user id
+                    int userId;
+                    userId = Integer.parseInt(JWT.decode(token).getAudience().get(0));
+                    Employee user = userService.findUserById(userId);
+                    if (user == null) {
+                        throw new CustomException(CODE_100, USER_NOT_EXIT);
+                    }
+                    // 验证 token
+                    String role = "";
+                    if(JWT.decode(token).getAudience().size()>1) {
+                        role = JWT.decode(token).getAudience().get(1);
+                        AuthToken authToken = method.getAnnotation(AuthToken.class);
+                        System.out.println("role:" + role + ",role_name:" + authToken.role_name());
+                        if (!role.equals(authToken.role_name())) {
+                            throw new CustomException(CODE_101, MESSAGE_NOT_PROMISION);
+                        }
+                    }
+                    //if()
+
+                    JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getEmployeePassword())).build();
+                    jwtVerifier.verify(token);
+                    return true;
                 }
             }
         } catch (JWTVerificationException e) {
