@@ -5,9 +5,11 @@ import cn.tag.Interceptor.PassToken;
 import cn.tag.Interceptor.UserLoginToken;
 import cn.tag.entity.ParkingOrder;
 import cn.tag.entity.PublicParkingLot;
+import cn.tag.entity.ShareParkingLot;
 import cn.tag.enums.OrderStatusEnum;
 import cn.tag.service.ParkingOrderService;
 import cn.tag.service.PublicParkingLotService;
+import cn.tag.service.ShareParkingLotService;
 import cn.tag.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,8 @@ public class ParkingOrderController {
     private ParkingOrderService parkingOrderService;
     @Autowired
     private PublicParkingLotService parkingLotService;
-
+    @Autowired
+    private ShareParkingLotService shareParkingLotService;
     @GetMapping
     public ResponseEntity findAll() {
         return ResponseEntity.ok(parkingOrderService.findAll());
@@ -106,7 +109,7 @@ public class ParkingOrderController {
         setParkingOrderfinished(parkingOrder);
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
         map.put("code", "200");
-        map.put("message", "停车完成");
+        map.put("message", "完成");
         return ResponseEntity.ok(map);
     }
 
@@ -144,9 +147,14 @@ public class ParkingOrderController {
             parkingLot.setRemain(parkingLot.getRemain() - 1);
             parkingLotService.update(parkingLot.getId(), parkingLot);
         } else {
-
+            ShareParkingLot shareParkingLot = shareParkingLotService.findById(parkingOrder.getParkingLotId());
+            shareParkingLot.setStatus(1);
         }
-        parkingOrder.setStatus(OrderStatusEnum.FETCH_WAIT.getKey());
+        if( parkingOrder.getType()==0) {
+           parkingOrder.setStatus(OrderStatusEnum.FETCH_WAIT.getKey());
+        }else{
+            parkingOrder.setStatus(OrderStatusEnum.FINISH.getKey());
+        }
         parkingOrder.setEndTime(System.currentTimeMillis());
     }
 }
