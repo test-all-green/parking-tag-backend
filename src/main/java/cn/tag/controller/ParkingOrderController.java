@@ -80,7 +80,17 @@ public class ParkingOrderController {
         System.out.println("tokenUserId:" + tokenUserId);
         return ResponseEntity.ok(parkingOrderService.findByEmployeeIdOrderByCreateTime(Integer.valueOf(tokenUserId)));
     }
-
+    @PutMapping("/saveParkBoyId/{orderId}")
+    public ResponseEntity saveParkBoyId(@PathVariable Integer orderId){
+        ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(orderId);
+        String tokenUserId = TokenUtil.getTokenUserId();
+        parkingOrder.setParkingBoyId(Integer.valueOf(tokenUserId));
+        parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
+        Map map = new HashMap();
+        map.put("code", "200");
+        map.put("message", "抢单成功");
+        return ResponseEntity.ok(map);
+    }
 
     @PutMapping("/grabOrder")
     public ResponseEntity grabOrder(@RequestBody Map<String, String> request) throws ObjectOptimisticLockingFailureException {
@@ -97,7 +107,7 @@ public class ParkingOrderController {
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
 
         map.put("code", "200");
-        map.put("message", "抢单成功");
+        map.put("message", "完成操作");
         return ResponseEntity.ok(map);
     }
 
@@ -132,11 +142,11 @@ public class ParkingOrderController {
             parkingLot.setRemain(parkingLot.getRemain() - 1);
             parkingLotService.update(parkingLot.getId(), parkingLot);
             parkingOrder.setParkingLocation(parkingLot.getLocation());
+            parkingOrder.setParkingCreateTime(System.currentTimeMillis());
         }
         parkingOrder.setStatus(OrderStatusEnum.PARKING_ING.getKey());
         parkingOrder.setType(0);
-        String tokenUserId = TokenUtil.getTokenUserId();
-        parkingOrder.setParkingBoyId(Integer.valueOf(tokenUserId));
+
     }
 
     private void setParkingOrderfinished(ParkingOrder parkingOrder) {
@@ -156,5 +166,8 @@ public class ParkingOrderController {
             parkingOrder.setStatus(OrderStatusEnum.FINISH.getKey());
         }
         parkingOrder.setEndTime(System.currentTimeMillis());
+        System.out.println("时间："+(parkingOrder.getEndTime().longValue()-parkingOrder.getParkingCreateTime().longValue()));
+        //parkingOrder.setMoney();
     }
+    //private double countParkMoney(parkingOrder)
 }
