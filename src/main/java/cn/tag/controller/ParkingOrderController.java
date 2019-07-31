@@ -103,6 +103,7 @@ public class ParkingOrderController {
 
     @PutMapping("/grabOrder")
     public ResponseEntity grabOrder(@RequestBody Map<String, String> request) throws ObjectOptimisticLockingFailureException {
+        System.out.println("======================");
         Map map = new HashMap();
         String parkingLotType = request.get("parkingLotType");
         String parkingLotId = request.get("parkingLotId");
@@ -112,6 +113,7 @@ public class ParkingOrderController {
             map.put("message", "订单已被抢");
         }
         parkingOrder.setParkingLotId(Integer.valueOf(parkingLotId));
+        parkingOrder.setParkingLotType(Integer.valueOf(parkingLotType));
         setParkingOrder(parkingOrder, parkingLotId, parkingLotType);
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
 
@@ -136,7 +138,11 @@ public class ParkingOrderController {
     public ResponseEntity getOrdersWithStatus(@RequestParam(name = "status", defaultValue = "PW") String status) {
         return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));
     }
-
+//    @GetMapping("/{orderId}")
+//    public ResponseEntity getOrder(@PathVariable Integer orderId, @RequestParam Integer type) {
+//
+////        return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));
+//    }
     @GetMapping("/getFinishedOrder")
     public ResponseEntity getOrderBySytleIsZeroAndStatusIsF() {
         Integer orderId = Integer.valueOf(TokenUtil.getTokenUserId());
