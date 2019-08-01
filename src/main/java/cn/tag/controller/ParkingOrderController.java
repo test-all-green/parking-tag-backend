@@ -74,7 +74,7 @@ public class ParkingOrderController {
         return ResponseEntity.ok(parkingOrderService.update(id, parkingOrder));
     }
 
-    //@EmployeeToken
+    @PassToken
     @GetMapping("/history")
     public ResponseEntity findByUserId() {
         String tokenUserId = TokenUtil.getTokenUserId();
@@ -134,7 +134,7 @@ public class ParkingOrderController {
         map.put("message", "完成");
         return ResponseEntity.ok(map);
     }
-
+    @PassToken
     @GetMapping(params = {"status"})
     public ResponseEntity getOrdersWithStatus(@RequestParam(name = "status", defaultValue = "PW") String status) {
         return ResponseEntity.ok(parkingOrderService.getOrdersWithStatus(status));
