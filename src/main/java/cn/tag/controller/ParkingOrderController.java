@@ -74,7 +74,7 @@ public class ParkingOrderController {
         return ResponseEntity.ok(parkingOrderService.update(id, parkingOrder));
     }
 
-    @EmployeeToken
+    //@EmployeeToken
     @GetMapping("/history")
     public ResponseEntity findByUserId() {
         String tokenUserId = TokenUtil.getTokenUserId();
