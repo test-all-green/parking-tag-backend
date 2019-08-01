@@ -21,7 +21,7 @@ public class ShareParkingLotController {
     private ShareParkingLotService shareParkingLotService;
 
     @GetMapping(params = {"page", "pageSize"})
-    @EmployeeToken
+    //@EmployeeToken
     public ResponseEntity findByPage(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
         Page<ShareParkingLot> shareParkingLots = shareParkingLotService.findByPage(page,pageSize);
