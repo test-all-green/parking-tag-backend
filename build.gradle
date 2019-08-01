@@ -38,6 +38,10 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.47'
     compile 'mysql:mysql-connector-java:5.1.25'
     compileOnly 'org.projectlombok:lombok:1.18.2'
+    compile 'com.alipay.sdk:alipay-sdk-java:3.7.110.ALL'
+    compile 'com.google.code.gson:gson'
+    compile 'commons-configuration:commons-configuration:1.10'
+
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 
     testCompile 'org.projectlombok:lombok:1.18.2'
