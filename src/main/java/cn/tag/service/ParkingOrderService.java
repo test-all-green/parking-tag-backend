@@ -47,7 +47,9 @@ public class ParkingOrderService {
             if(parkingOrder.getType()!=null&&parkingOrder.getType()==1){
                 ParkingOrder parkingOrder1 = parkingOrderRepository.findById(parkingOrder.getPreviousOrderId()).get();
                 parkingOrder1.setStatus(OrderStatusEnum.FINISH.getKey());
-                parkingOrder.setCreateTime(parkingOrder1.getCreateTime());
+                parkingOrder.setCreateTime(System.currentTimeMillis());
+                parkingOrder.setParkingLotType(parkingOrder1.getParkingLotType());
+                parkingOrder.setParkingLocation(parkingOrder1.getParkingLocation());
                 parkingOrderRepository.saveAndFlush(parkingOrder1);
             }
             return parkingOrderRepository.save(parkingOrder);

@@ -199,7 +199,8 @@ public class ParkingOrderController {
             price = shareParkingLotService.findById(parkingOrder.getParkingLotId()).getPrice();
         }
         Date time1 = getTimeStr(parkingOrder.getEndTime());
-        Date time2 = getTimeStr(parkingOrder.getParkingCreateTime());
+        ParkingOrder parkingOrder1 = parkingOrderService.findOrderByOrderId(parkingOrder.getPreviousOrderId());
+        Date time2 = getTimeStr(parkingOrder1.getParkingCreateTime());
         long diff = time1.getTime() - time2.getTime();
         long diffDays = diff / (24 * 60 * 60 * 1000);
         long diffHours = diff / (60 * 60 * 1000) % 24 + 1;
