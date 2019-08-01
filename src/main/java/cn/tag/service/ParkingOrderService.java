@@ -13,10 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ParkingOrderService {
@@ -78,6 +75,18 @@ public class ParkingOrderService {
 
     public JSONArray findOrderOfUser(Integer userId) {
         List<ParkingOrder> ordersWithStatus = parkingOrderRepository.findByCarUserIdOrderByCreateTimeDesc(userId);
+        //List<ParkingOrder> orders = ordersWithStatus;
+        List<ParkingOrder> parkingOrders = new ArrayList<>();
+        ordersWithStatus.forEach(parkingOrder -> {
+            if(parkingOrder.getPreviousOrderId()!=null){
+                parkingOrders.add(parkingOrder);
+            }
+        });
+        parkingOrders.forEach(parkingOrder -> {
+            ParkingOrder parkingOrder1 = parkingOrderRepository.findById(parkingOrder.getPreviousOrderId()).get();
+            ordersWithStatus.remove(parkingOrder1);
+        });
+        //ordersWithStatus.stream().filter(parkingOrder -> parkingOrder.getPreviousOrderId())
         System.out.println("++++++++++++++:"+ordersWithStatus.size());
         return getOrderJsonArray(ordersWithStatus);
     }
