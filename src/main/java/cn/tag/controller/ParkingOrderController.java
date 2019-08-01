@@ -126,7 +126,17 @@ public class ParkingOrderController {
         map.put("message", "完成操作");
         return ResponseEntity.ok(map);
     }
-
+    @PutMapping("/arrvial-parking-lot/{orderId}")
+    public ResponseEntity setFetchStatus(@PathVariable Integer orderId) {
+        Map map = new HashMap();
+        ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(orderId);
+        parkingOrder.setStatus("FF");
+        parkingOrder.setParkingEndTime(System.currentTimeMillis());
+        parkingOrderService.update(orderId,parkingOrder);
+        map.put("code", "200");
+        map.put("message", "您开始取车");
+        return ResponseEntity.ok(map);
+    }
     @PassToken
     @PutMapping("/finishedOrder/{orderId}")
     public ResponseEntity finishedOrder(@PathVariable Integer orderId) throws ObjectOptimisticLockingFailureException, ParseException {

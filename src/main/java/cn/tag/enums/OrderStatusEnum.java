@@ -9,6 +9,7 @@ public enum OrderStatusEnum {
     FETCH_WAIT("FW","等待取车受理"),
 //    FETCH_ING("FI","取车中"),
     GO_ING("GI", "前往地点"),
+    FETCH_FINISHED("FF", "前往交接点"),
     PAY_WAIT("WP", "待支付"),
     FINISH("F", "已完成"),
     CANCEL("C", "取消订单");
