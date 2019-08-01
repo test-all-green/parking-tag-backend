@@ -135,11 +135,11 @@ public class ParkingOrderController {
         parkingOrder.setParkingEndTime(System.currentTimeMillis());
         Integer parkingLotId = parkingOrder.getParkingLotId();
         Integer parkingType = parkingOrder.getParkingLotType();
-        if(parkingType == 0){
+        if(parkingType == 1){
             PublicParkingLot publicParkingLot = parkingLotService.findById(parkingLotId);
             publicParkingLot.setRemain(publicParkingLot.getRemain() + 1);
             parkingLotService.update(publicParkingLot.getId(),publicParkingLot);
-        }else if(parkingType ==1) {
+        }else if(parkingType == 2) {
             ShareParkingLot shareParkingLot = shareParkingLotService.findById(parkingLotId);
             shareParkingLot.setStatus(1);
             shareParkingLotService.updateStatus(shareParkingLot);
