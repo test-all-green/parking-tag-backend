@@ -180,7 +180,7 @@ public class ParkingOrderService {
         if(type==0){
             map.put("fetchOrder",new JSONObject());
         }else if(type == 1){
-            ParkingOrder parkingOrder1 = parkingOrderRepository.findOrderByPreOrderId(parkingOrder.getPreviousOrderId());
+            ParkingOrder parkingOrder1 = parkingOrderRepository.findById(parkingOrder.getPreviousOrderId()).get();
             jsonObject = getOrderJsonObject(parkingOrder1);
             map.put("fetchOrder",jsonObject);
         }
