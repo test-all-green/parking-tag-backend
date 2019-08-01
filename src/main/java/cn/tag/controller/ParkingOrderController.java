@@ -183,7 +183,7 @@ public class ParkingOrderController {
         if (parkingOrder.getType() == 0) {
             parkingOrder.setStatus(OrderStatusEnum.FETCH_WAIT.getKey());
         } else {
-            parkingOrder.setStatus(OrderStatusEnum.FINISH.getKey());
+            parkingOrder.setStatus(OrderStatusEnum.PAY_WAIT.getKey());
             setParkTime(parkingOrder);
         }
         parkingOrder.setEndTime(System.currentTimeMillis());

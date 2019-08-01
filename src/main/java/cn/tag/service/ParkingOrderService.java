@@ -76,6 +76,7 @@ public class ParkingOrderService {
 
     public JSONArray findOrderOfUser(Integer userId) {
         List<ParkingOrder> ordersWithStatus = parkingOrderRepository.findByCarUserIdOrderByCreateTimeDesc(userId);
+        System.out.println("++++++++++++++:"+ordersWithStatus.size());
         return getOrderJsonArray(ordersWithStatus);
     }
 
