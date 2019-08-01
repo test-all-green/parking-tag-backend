@@ -117,6 +117,7 @@ public class ParkingOrderController {
         if (parkingOrder.getStatus() != OrderStatusEnum.PARKING_WAIT.toString()) {
             map.put("message", "订单已被抢");
         }
+
         parkingOrder.setParkingLotId(Integer.valueOf(parkingLotId));
         parkingOrder.setParkingLotType(Integer.valueOf(parkingLotType));
         setParkingOrder(parkingOrder, parkingLotId, parkingLotType);
@@ -132,6 +133,17 @@ public class ParkingOrderController {
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(orderId);
         parkingOrder.setStatus("FF");
         parkingOrder.setParkingEndTime(System.currentTimeMillis());
+        Integer parkingLotId = parkingOrder.getParkingLotId();
+        Integer parkingType = parkingOrder.getParkingLotType();
+        if(parkingType == 0){
+            PublicParkingLot publicParkingLot = parkingLotService.findById(parkingLotId);
+            publicParkingLot.setRemain(publicParkingLot.getRemain() + 1);
+            parkingLotService.update(publicParkingLot.getId(),publicParkingLot);
+        }else if(parkingType ==1) {
+            ShareParkingLot shareParkingLot = shareParkingLotService.findById(parkingLotId);
+            shareParkingLot.setStatus(1);
+            shareParkingLotService.updateStatus(shareParkingLot);
+        }
         parkingOrderService.update(orderId,parkingOrder);
         map.put("code", "200");
         map.put("message", "您开始取车");
@@ -186,14 +198,6 @@ public class ParkingOrderController {
     private void setParkingOrderfinished(ParkingOrder parkingOrder) throws ParseException {
         // todo 根据parking lot类型获取parking location
         // 停车场剩余容量加 1
-        if (parkingOrder.getParkingLotType() == 1) {
-            PublicParkingLot parkingLot = parkingLotService.findById(parkingOrder.getParkingLotId());
-            parkingLot.setRemain(parkingLot.getRemain() - 1);
-            parkingLotService.update(parkingLot.getId(), parkingLot);
-        } else {
-            ShareParkingLot shareParkingLot = shareParkingLotService.findById(parkingOrder.getParkingLotId());
-            shareParkingLot.setStatus(1);
-        }
         if (parkingOrder.getType() == 0) {
             parkingOrder.setStatus(OrderStatusEnum.FETCH_WAIT.getKey());
         } else {
@@ -204,7 +208,7 @@ public class ParkingOrderController {
 
     }
 
-    private long setParkTime(ParkingOrder parkingOrder) throws ParseException {
+    private void setParkTime(ParkingOrder parkingOrder) throws ParseException {
         long parkTime;
         double price = 0.0;
         if (parkingOrder.getParkingLotType() == 1) {
@@ -212,21 +216,22 @@ public class ParkingOrderController {
         } else {
             price = shareParkingLotService.findById(parkingOrder.getParkingLotId()).getPrice();
         }
-        Date time1 = getTimeStr(parkingOrder.getEndTime());
+        long entTime = parkingOrder.getParkingEndTime();
         ParkingOrder parkingOrder1 = parkingOrderService.findOrderByOrderId(parkingOrder.getPreviousOrderId());
-        Date time2 = getTimeStr(parkingOrder1.getParkingCreateTime());
-        long diff = time1.getTime() - time2.getTime();
-        long diffDays = diff / (24 * 60 * 60 * 1000);
-        long diffHours = diff / (60 * 60 * 1000) % 24 + 1;
-        parkTime = diffDays * 24 + diffHours;
-        //System.out.println("parkTime"+parkTime);
-        parkingOrder.setMoney(parkTime * price);
-        return parkTime;
+        long createTime = parkingOrder1.getParkingCreateTime();
+        int time = (int) ((entTime-createTime)/(1000*3600)+1);
+//        long diff = time1.getTime() - time2.getTime();
+//        long diffDays = diff / (24 * 60 * 60 * 1000);
+//        long diffHours = diff / (60 * 60 * 1000) % 24 + 1;
+//        parkTime = diffDays * 24 + diffHours;
+//        //System.out.println("parkTime"+parkTime);
+        parkingOrder.setMoney(time * price);
+       // return parkTime;
     }
 
-    private Date getTimeStr(long timeLong) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.parse(sdf.format(new Date(Long.parseLong(String.valueOf(timeLong)))));
-    }
+//    private Date getTimeStr(long timeLong) throws ParseException {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        return sdf.parse(sdf.format(new Date(Long.parseLong(String.valueOf(timeLong)))));
+//    }
 //    private double countParkMoney(parkingOrder)
 }

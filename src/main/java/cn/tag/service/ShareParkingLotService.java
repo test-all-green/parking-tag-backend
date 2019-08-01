@@ -90,29 +90,33 @@ public class ShareParkingLotService {
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(orderId);
         List<ShareParkingLot> shareParkingLotList = shareParkingLotRepository.findByRegionId(parkingOrder.getRegionId());
         shareParkingLotList=shareParkingLotList.stream().filter(es->es.getStatus()==1).collect(Collectors.toList());
-        Long scheduledParkingTime = parkingOrder.getScheduledParkingTime();
-        String scheduledParkingArriveTime = parkingOrder.getScheduledParkingArriveTime();
-        //
-        scheduledParkingTime=scheduledParkingTime*60*60*1000;
-        DateFormat df = new SimpleDateFormat("HH:mm:ss");
-        //
-        long tempScheduledParkingTime = df.parse(scheduledParkingArriveTime + ":00").getTime();
-        List<ShareParkingLot> currentShareParkingLot=new ArrayList<>();
-        for(int i=0;i<shareParkingLotList.size();i++){
-            Long endTime = shareParkingLotList.get(i).getEndTime();
-            SimpleDateFormat lsdFormat = new SimpleDateFormat("HH:mm:ss");
-            Date lDate = new Date(endTime*1000);
-            String lStrDate = lsdFormat.format(lDate);
-            try {
-                long tempEndTime = df.parse(lStrDate).getTime();
-                if(tempEndTime>=(scheduledParkingTime+tempScheduledParkingTime)){
-                    currentShareParkingLot.add(shareParkingLotList.get(i));
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return currentShareParkingLot;
+//        Long scheduledParkingTime = parkingOrder.getScheduledParkingTime();
+//        String scheduledParkingArriveTime = parkingOrder.getScheduledParkingArriveTime();
+//        //
+//        scheduledParkingTime=scheduledParkingTime*60*60;
+//        System.out.println("scheduledParkingTime----"+scheduledParkingTime);
+//        DateFormat df = new SimpleDateFormat("HH:mm:ss");
+//        //
+//        long tempScheduledParkingTime = df.parse(scheduledParkingArriveTime + ":00").getTime();
+//        System.out.println("tempScheduledParkingTime---------"+tempScheduledParkingTime);
+//        List<ShareParkingLot> currentShareParkingLot=new ArrayList<>();
+//        for(int i=0;i<shareParkingLotList.size();i++){
+//            Long endTime = shareParkingLotList.get(i).getEndTime();
+//            System.out.println("endTime---------"+endTime);
+//            SimpleDateFormat lsdFormat = new SimpleDateFormat("HH:mm:ss");
+//            Date lDate = new Date(endTime*1000);
+//            String lStrDate = lsdFormat.format(lDate);
+//            try {
+//                long tempEndTime = df.parse(lStrDate).getTime();
+//                System.out.println("tempEndTime---------"+tempEndTime);
+//                if(tempEndTime>=(scheduledParkingTime+tempScheduledParkingTime)){
+//                    currentShareParkingLot.add(shareParkingLotList.get(i));
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        return shareParkingLotList;
     }
     public ShareParkingLot cancelPublish(Integer id) {
         ShareParkingLot lot = shareParkingLotRepository.findById(id).get();
