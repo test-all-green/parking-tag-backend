@@ -94,11 +94,7 @@ public class ParkingOrderController {
         ParkingOrder parkingOrder = parkingOrderService.findOrderByOrderId(orderId);
         String tokenUserId = TokenUtil.getTokenUserId();
         parkingOrder.setParkingBoyId(Integer.valueOf(tokenUserId));
-        if(parkingOrder.getType()==0) {
-            parkingOrder.setStatus(OrderStatusEnum.WAIT_TO.getKey());
-        }else {
-            parkingOrder.setStatus(OrderStatusEnum.GO_ING.getKey());
-        }
+        parkingOrder.setStatus(OrderStatusEnum.WAIT_TO.getKey());
         parkingOrderService.update(Integer.valueOf(orderId), parkingOrder);
         Map map = new HashMap();
         map.put("code", "200");
