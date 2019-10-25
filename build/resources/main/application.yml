@@ -1,0 +1,38 @@
+server:
+  port: 8088
+  tomcat:
+    uri-encoding: UTF-8
+logging.file: logs/application.log
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate: ERROR
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://rm-wz99tyk065h7mj4q5bo.mysql.rds.aliyuncs.com/test_all_green?characterEncoding=utf-8
+    username: root
+    password: roottest
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  banner:
+    charset: UTF-8
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  messages:
+    encoding: UTF-8
+#  h2:
+#    console:
+#      enabled: true
+
